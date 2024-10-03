@@ -1,5 +1,6 @@
-import 'package:cubework_app_client/shared/modal/search_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -25,61 +26,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Set to fullscreen mode, hiding the bottom navigation bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
+  @override
+  void dispose() {
+    // Restore the system UI when the widget is disposed
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SearchAnchor(
-              builder: (BuildContext context, SearchController controller) {
-                return SearchBar(
-                  backgroundColor:
-                      const WidgetStatePropertyAll(Color(0xFFFFFFFF)),
-                  controller: controller,
-                  hintText: "Search text",
-                  leading: const Icon(Icons.search),
-                  trailing: const [Icon(Icons.filter_list_alt)],
-                  onTap: () => {
-                    controller.openView(),
-                  },
-                  onChanged: (value) => {
-                    controller.openView(),
-                  },
-                );
-              },
-              suggestionsBuilder:
-                  (BuildContext context, SearchController controller) {
-                return List<Widget>.from(
-                    searchBtn.map((Map<String, dynamic> btn) {
-                  return Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors
-                          .white, // Add the color to the Container for the background
-                    ),
-                    // ClipRRect ensures the ListTile will have rounded corners by clipping it to match the container's borderRadius
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: ListTile(
-                        selectedColor: Colors.grey[300],
-                        hoverColor: Colors.grey[300],
-                        leading: Icon(btn["icon"]),
-                        title: Text(btn['textField']),
-                        onTap: () {
-                          void searchBarCloseViewCallback(String text) {
-                            controller.closeView(text);
-                          }
-
-                          SearchModal.show(
-                            context,
-                            searchBarCloseViewCallback,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                }));
-              },
-            )));
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => ExploreSearchWidget(
+                        searchBarCloseViewCallback: (String value) {
+                      Navigator.of(context).pop();
+                    }));
+          },
+          child: const ListTile(
+            leading: Icon(Icons.search),
+            title: Text("Search"),
+          ),
+        ),
+      ),
+    );
   }
 }
