@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/screens/explore_screen.dart';
 import 'package:cubework_app_client/screens/my_account_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class MainApp extends StatelessWidget {
 
   TabBarView get _tabBarView => const TabBarView(
     children: [
-      Center(child: Text("Home")),
+      ExploreScreen(),
       MyAccountScreen(),
       Center(child: Text("Orders")),
     ],
