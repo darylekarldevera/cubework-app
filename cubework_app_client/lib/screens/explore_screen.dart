@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
+import 'package:flutter/services.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -10,20 +10,6 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  List<Map<String, dynamic>> searchBtn = [
-    {
-      'icon': Icons.search,
-      'textField': "Location",
-    },
-    {
-      'icon': Icons.calendar_today,
-      'textField': "Start Date",
-    },
-    {
-      'icon': Icons.calendar_today,
-      'textField': "End Date",
-    },
-  ];
 
   @override
   void initState() {
