@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/shared/modal/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cubework_app_client/shared/modal/search_modal.dart';
 
@@ -20,6 +21,26 @@ class ExploreSearchWidget extends StatelessWidget {
     },
   ];
 
+  Function get _onSearch => (BuildContext context, String value) {
+        if (value == "Location") {
+          SearchModal.show(
+            context,
+            searchBarCloseViewCallback,
+          );
+          return;
+        }
+
+        if (value == "Start Date") {
+          DatePickerWidget.show(context);
+          return;
+        }
+
+        if (value == "End Date") {
+          // Add your code here
+          return;
+        }
+      };
+
   @override
   Widget build(BuildContext context) {
     const double fortyPercentWidth = 0.4;
@@ -38,7 +59,9 @@ class ExploreSearchWidget extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text("Search", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            title: const Text("Search",
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
             leading: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -63,12 +86,7 @@ class ExploreSearchWidget extends StatelessWidget {
                     leading: Icon(btn["icon"]),
                     title: Text(btn['textField']),
                     onTap: () {
-                      if (btn['textField'] == "Location") {
-                        SearchModal.show(
-                          context,
-                          searchBarCloseViewCallback,
-                        );
-                      }
+                      _onSearch(context, btn['textField']);
                     },
                   ),
                 ),
