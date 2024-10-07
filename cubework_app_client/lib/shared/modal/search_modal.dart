@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class SearchModal extends StatefulWidget {
-  final void Function(String) searchBarCloseViewCallback;
-  const SearchModal({super.key, required this.searchBarCloseViewCallback});
+  final void Function(String) getLocation;
+  const SearchModal({super.key, required this.getLocation});
 
   @override
   State<SearchModal> createState() => _SearchModalState();
 
   // Static method to show the modal
   static void show(
-      BuildContext context, void Function(String) searchBarCloseViewCallback) {
+      BuildContext context, void Function(String) getLocation) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, // Makes it full screen
       builder: (context) {
         return SearchModal(
-          searchBarCloseViewCallback: searchBarCloseViewCallback,
+          getLocation: getLocation,
         ); // Show the stateful widget here
       },
     );
@@ -120,8 +120,8 @@ class _SearchModalState extends State<SearchModal> {
                         ),
                       ),
                       onTap: () {
-                        // Invoke the searchBarCloseViewCallback with the selected item
-                        widget.searchBarCloseViewCallback(filteredItems[index]);
+                        // Invoke the getLocation with the selected item
+                        widget.getLocation(filteredItems[index]);
                         // Close the modal
                         Navigator.pop(context);
                       },
