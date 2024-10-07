@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 import 'package:flutter/services.dart';
+import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -10,6 +10,10 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+  
+  void _searchBarCloseViewCallback() {
+    Navigator.of(context).pop();
+  }
 
   @override
   void initState() {
@@ -36,9 +40,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) => ExploreSearchWidget(
-                        searchBarCloseViewCallback: (String value) {
-                      Navigator.of(context).pop();
-                    }));
+                        searchBarCloseViewCallback: _searchBarCloseViewCallback
+                    ));
           },
           child: const ListTile(
             leading: Icon(Icons.search),
