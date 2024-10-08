@@ -108,8 +108,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   }
 
   bool isSelectButtonEnabled() {
-    if (availableTimes.isNotEmpty &&
-        availableTimes.first == selectedTime) {
+    if (availableTimes.isEmpty || availableTimes.first == selectedTime) {
       return false;
     }
     return true;
