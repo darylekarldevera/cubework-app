@@ -1,0 +1,39 @@
+{
+  "offices": [
+    {
+      "name": "Colegio San Agustin Makati",
+      "city": "Makati",
+      "address": "Palm Ave, Makati, Metro Manila",
+      "lat": 14.5423396,
+      "lng": 121.0229465
+    },
+    {
+      "name": "Tower 6789 - CubeWork PH",
+      "city": "Makati",
+      "address": "6789 Ayala Ave, Makati, 1206 Metro Manila",
+      "lat": 14.5406867,
+      "lng": 121.0091576
+    },
+    {
+      "name": "Greenbelt",
+      "city": "Makati",
+      "address": "Legazpi Street, Legazpi Village, Makati, Kalakhang Maynila",
+      "lat": 14.5497606,
+      "lng": 121.0190774
+    },
+    {
+      "name": "San Beda University",
+      "city": "Manila",
+      "address": "638 Mendiola St, San Miguel, Manila, 1005 Metro Manila",
+      "lat": 14.600564,
+      "lng": 120.9782776
+    },
+    {
+      "name": "Far Eastern University",
+      "city": "Manila",
+      "address": "Nicanor Reyes Sr, Street, Sampaloc, Manila, 1008 Metro Manila",
+      "lat": 14.600564,
+      "lng": 120.9782776
+    }
+  ]
+}
