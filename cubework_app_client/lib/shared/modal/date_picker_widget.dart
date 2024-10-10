@@ -5,7 +5,7 @@ import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 class DatePickerWidget extends StatefulWidget {
-  final void Function(DateTime, String) datePickerHandler;
+  final void Function(DateTime, String, String) datePickerHandler;
   const DatePickerWidget({super.key, required this.datePickerHandler});
 
   @override
@@ -13,7 +13,7 @@ class DatePickerWidget extends StatefulWidget {
 
   // Static method to show the modal
   static void show(
-      BuildContext context, void Function(DateTime, String) datePickerHandler) {
+      BuildContext context, void Function(DateTime, String, String) datePickerHandler) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -319,7 +319,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                   margin: const EdgeInsets.only(left: 15, right: 15),
                   child: ElevatedButton(
                       onPressed: () => {
-                            widget.datePickerHandler(selectedDate, selectedTime),
+                            widget.datePickerHandler(selectedDate, selectedTime, selectedMeridiemIndicator),
                             Navigator.of(context).pop()
                           },
                       style: ButtonStyle(

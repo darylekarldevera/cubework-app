@@ -1,48 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:cubework_app_client/services/fetch_location.dart';
+import 'package:cubework_app_client/utils/serializable/locations.dart';
 
 class SearchModal extends StatefulWidget {
-  final void Function(String) getLocation;
-  const SearchModal({super.key, required this.getLocation});
+  final void Function(Office) getLocationCallback;
+  const SearchModal({super.key, required this.getLocationCallback});
 
   @override
   State<SearchModal> createState() => _SearchModalState();
 
   // Static method to show the modal
   static void show(
-      BuildContext context, void Function(String) getLocation) {
+      BuildContext context, void Function(Office) getLocationCallback) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Makes it full screen
+      // Makes it full screen
+      isScrollControlled: true, 
       builder: (context) {
         return SearchModal(
-          getLocation: getLocation,
-        ); // Show the stateful widget here
+          // Show the stateful widget here
+          getLocationCallback: getLocationCallback,
+        ); 
       },
     );
   }
 }
 
 class _SearchModalState extends State<SearchModal> {
-  List<String> items = List.generate(5, (int index) => 'Item $index');
-  List<String> filteredItems = [];
+  bool isLoading = true;
+  List<Office> items = [];
+  List<Office> filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    filteredItems = items; // Initially, all items are shown
+    getLocation();
+  }
+
+  void getLocation() async {
+    Future.delayed(const Duration(seconds: 3));
+    final data = await fetchLocation();
+    setState(() {
+      items = data;
+      filteredItems = data;
+      isLoading = false;
+    });
   }
 
   void setItems(String searchText) {
     setState(() {
       filteredItems = items
           .where(
-              (item) => item.toLowerCase().contains(searchText.toLowerCase()))
+              (item) => item.city.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100, // Full height minus 200
       child: Scaffold(
@@ -59,20 +81,22 @@ class _SearchModalState extends State<SearchModal> {
             alignment: Alignment.topLeft,
             child: const Text("Search"),
           ),
+          // Prevents the default leading (back arrow) from appearing
           automaticallyImplyLeading:
-              false, // Prevents the default leading (back arrow) from appearing
+              false, 
           actions: [
             Padding(
               padding: const EdgeInsets.only(top: 16, right: 8.0),
+              // Background color inside the circle
               child: CircleAvatar(
                 backgroundColor:
-                    Colors.grey.shade300, // Background color inside the circle
+                    Colors.grey.shade300,
                 child: IconButton(
                   icon: const Icon(
                     Icons.close,
                     color: Colors.black,
                   ),
-                  color: Colors.white, // Color of the icon itself
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -98,8 +122,9 @@ class _SearchModalState extends State<SearchModal> {
                     prefixIcon: Icon(Icons.search),
                   ),
                   onChanged: (text) {
+                    // Update filtered items based on search input
                     setItems(
-                        text); // Update filtered items based on search input
+                        text); 
                   },
                 ),
               ),
@@ -109,10 +134,10 @@ class _SearchModalState extends State<SearchModal> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
-                        filteredItems[index],
+                        filteredItems[index].name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: const Text("Placeholder Text"),
+                      subtitle: Text(filteredItems[index].address),
                       shape: Border(
                         bottom: BorderSide(
                           width: 2,
@@ -121,7 +146,7 @@ class _SearchModalState extends State<SearchModal> {
                       ),
                       onTap: () {
                         // Invoke the getLocation with the selected item
-                        widget.getLocation(filteredItems[index]);
+                        widget.getLocationCallback(filteredItems[index]);
                         // Close the modal
                         Navigator.pop(context);
                       },

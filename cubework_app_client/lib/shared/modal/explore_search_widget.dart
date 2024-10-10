@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:cubework_app_client/utils/format_date.dart';
+import 'package:flutter/material.dart';
+import 'package:cubework_app_client/interfaces/reserverd_location.dart';
+import 'package:cubework_app_client/utils/serializable/locations.dart';
 
 import 'package:cubework_app_client/shared/modal/search_modal.dart';
 import 'package:cubework_app_client/shared/modal/date_picker_widget.dart';
@@ -16,41 +18,51 @@ class ExploreSearchWidget extends StatefulWidget {
 }
 
 class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
-  String? _startTime;
-  String? _endTime;
-  DateTime? _startDate;
-  DateTime? _endDate;
-  String? _location;
-
-
-  void Function(DateTime date, String time) get _startDateCallback => (DateTime date, String time) {
-        setState(() {
-          _startDate = date;
-          _startTime = time;
-        });
-      };
-
-  void Function(DateTime date, String time) get _endDateCallBack =>
-      (DateTime date, String time) {
-        setState(() {
-          _endDate = date;
-          _endTime = time;
-        });
-      };
-
-  void Function(String) get getLocation => (String value) {
-        setState(() {
-          _location = value;
-        });
-      };
+  late ReservedPlace reservedPlace;
 
   @override
   void initState() {
     super.initState();
-    _startDate = null;
-    _endDate = null;
-    _location = null;
+    reservedPlace = ReservedPlaceImpl(
+      office: Office(address: "", lat: 0, lng: 0, name: "", city: ""),
+      startDate: DateTimeInfo(),
+      endDate: DateTimeInfo(),
+    );
   }
+
+  void Function(Office) get getReserveLocation => (Office value) {
+      setState(() {
+        reservedPlace = ReservedPlaceImpl(
+            office: value,
+            startDate: DateTimeInfo(),
+            endDate: DateTimeInfo());
+      });
+    };
+
+  void Function(DateTime date, String time, String meridiem) get _startDateCallback =>
+      (DateTime date, String time, String meridiem) {
+        setState(() {
+          reservedPlace = ReservedPlaceImpl(
+            office: reservedPlace.office,
+            startDate: DateTimeInfo(date: date, time: time, meridiem: meridiem),
+            endDate: DateTimeInfo()
+          );
+        });
+      };
+
+  void Function(DateTime date, String time, String meridiem) get _endDateCallBack =>
+      (DateTime date, String time, String meridiem) {
+        setState(() {
+          reservedPlace = ReservedPlaceImpl(
+            office: reservedPlace.office,
+            startDate: DateTimeInfo(
+                date: reservedPlace.startDate.date,
+                time: reservedPlace.startDate.time,
+                meridiem: reservedPlace.startDate.meridiem),
+            endDate: DateTimeInfo(date: date, time: time, meridiem: meridiem),
+          );
+        });
+      };
 
   final List<Map<String, dynamic>> searchBtn = [
     {
@@ -71,7 +83,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
         if (value == "Location") {
           SearchModal.show(
             context,
-            getLocation,
+            getReserveLocation,
           );
           return;
         }
@@ -87,45 +99,58 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
         }
       };
 
-  
+  Function(DateTime date, String time, String meridiem) formatString = (DateTime date, String time, String meridiem) {
+    final formattedDate = formatDate(date);
+    return "$formattedDate, $time $meridiem";
+  };
+
   Function(String) get buttonTitleHandler => (String value) {
-        if (value == "Start Date" && _startDate != null) {
-          return '${formatDate(_startDate!)}, $_startTime';
+        final reservedPlace = this.reservedPlace;
+        final startDate = reservedPlace.startDate;
+        final endDate = reservedPlace.endDate;
+
+        if (value == "Start Date" && startDate.date != null) {
+          return formatString(startDate.date!, startDate.time!, startDate.meridiem!);
         }
 
-        if (value == "End Date" && _endDate == null && _startDate != null) {
-          return '${formatDate(_startDate!)}, $_startTime';
+        if (value == "End Date" &&
+            endDate.date == null &&
+            startDate.date != null) {
+              
+          return formatString(startDate.date!, startDate.time!, startDate.meridiem!);
         }
 
-        if (value == "End Date" && _endDate != null) {
-          return '${formatDate(_endDate!)}, $_endTime';
+        if (value == "End Date" && endDate.date != null) {
+          return formatString(endDate.date!, endDate.time!, endDate.meridiem!);
         }
 
-        if (value == "Location" && _location != null) {
-          return _location!;
+        if (value == "Location" && reservedPlace.office!.name.isNotEmpty) {
+          return reservedPlace.office?.name;
         }
 
         return value;
       };
 
   Function(String) get buttonColorHandler => (String value) {
-      if (value == "Start Date" && _location == null) {
-        return Colors.grey.shade500;
-      }   
+        if (value == "Start Date" && reservedPlace.office!.name.isEmpty) {
+          return Colors.grey.shade500;
+        }
 
-      if (value == "End Date" && _startDate == null) {
-        return Colors.grey.shade500;
-      }
+        if (value == "End Date" &&
+            reservedPlace.startDate.date == null) {
+          return Colors.grey.shade500;
+        }
 
         return Colors.black;
       };
 
   Function(String) get disableButtonHandler => (String value) {
-        if (value == "Start Date" && _location == null) {
+        if (value == "Start Date" && reservedPlace.office!.name.isEmpty) {
           return true;
         }
 
-        if (value == "End Date" && _startDate == null) {
+        if (value == "End Date" &&
+            reservedPlace.startDate.date == null) {
           return true;
         }
 
@@ -136,12 +161,13 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
   Widget build(BuildContext context) {
     const double fortyPercentWidth = 0.4;
     const double sixPercentHeight = 0.06;
+
     final mediaQuery = MediaQuery.of(context);
     final mediaQueryWidth = mediaQuery.size.width * fortyPercentWidth;
     final mediaQueryHeight = mediaQuery.size.height * sixPercentHeight;
 
     return SafeArea(
-      top: false, 
+      top: false,
       bottom: false,
       child: Container(
         alignment: Alignment.topCenter,
@@ -173,7 +199,9 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
                   borderRadius: BorderRadius.circular(10),
                   child: ListTile(
                     leading: Icon(btn["icon"]),
-                    title: Text(buttonTitleHandler(btn['textField']), style: TextStyle(color: buttonColorHandler(btn['textField']))),
+                    title: Text(buttonTitleHandler(btn['textField']),
+                        style: TextStyle(
+                            color: buttonColorHandler(btn['textField']))),
                     onTap: () {
                       if (disableButtonHandler(btn['textField'])) return;
                       _onSearch(context, btn['textField']);
