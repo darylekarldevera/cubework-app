@@ -1,0 +1,17 @@
+import java.util.Properties
+
+// Helper function to load the .env file into properties
+def loadDotenv() {
+    Properties properties = new Properties()
+    File envFile = file("../../lib/assets/.env") 
+    if (envFile.exists()) {
+        properties.load(new FileInputStream(envFile))
+        println("Loaded .env file with GMAPS_API_KEY: " + properties.getProperty("GMAPS_API_KEY"))
+    } else {
+        throw new GradleException("Missing .env file: " + envFile.getAbsolutePath())
+    }
+    return properties
+}
+
+// Load the environment variables from .env file
+ext.env = loadDotenv()
