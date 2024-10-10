@@ -5,6 +5,8 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+apply from: "./dotenv.gradle"
+
 android {
     namespace = "com.example.cubework_app_client"
     compileSdk = flutter.compileSdkVersion
@@ -24,10 +26,14 @@ android {
         applicationId = "com.example.cubework_app_client"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
+        compileSdkVersion = 34
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Enables the Google Maps API key to be set in the AndroidManifest.xml file.
+        manifestPlaceholders.GMAPS_API_KEY = env['GMAPS_API_KEY']
     }
 
     buildTypes {
@@ -41,4 +47,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// error handler for missing Google Maps API key
+def gmapsApiKey = env['GMAPS_API_KEY']
+println("Google Maps API Key: $gmapsApiKey")
+
+if (!gmapsApiKey || gmapsApiKey == "null") {
+    throw new GradleException("Google Maps API Key is not set. Please set the GMAPS_API_KEY environment variable.")
 }
