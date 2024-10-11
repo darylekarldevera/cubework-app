@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/screens/Location_results_screen.dart';
 import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:cubework_app_client/interfaces/reserved_location.dart';
@@ -248,7 +249,13 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
                       ),
                     ),
                     onPressed: () {
-                      print("Search");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        if (reservedPlace.office == null) {
+                          return const Text("Please select a location");
+                        } 
+                        return LocationResultsScreen(
+                            searchedOffice: reservedPlace.office!);
+                      }));
                     },
                     child: const Text("Search"),
                   ),
