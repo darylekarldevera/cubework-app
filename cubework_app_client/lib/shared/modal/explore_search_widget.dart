@@ -254,7 +254,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
                           return const Text("Please select a location");
                         } 
                         return LocationResultsScreen(
-                            searchedOffice: reservedPlace.office!);
+                            reservedPlace: reservedPlace);
                       }));
                     },
                     child: const Text("Search"),
