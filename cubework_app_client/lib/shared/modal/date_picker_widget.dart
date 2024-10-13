@@ -42,10 +42,6 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     selectedDate = DateTime.now();
     generateAvailableTimes(selectedDate);
 
-    selectedTime = availableTimes.isNotEmpty
-        ? availableTimes.first
-        : DateFormat.Hm().format(DateTime.now());
-
     selectedMeridiemIndicator = DateFormat('a').format(selectedDate);
 
     dropDownFocus.addListener(() {
@@ -57,34 +53,42 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     });
   }
 
-  void generateAvailableTimes(DateTime newDate) {
-    DateTime currentTime;
-    final endOfDay = DateTime(newDate.year, newDate.month, newDate.day, 23, 59);
+  void generateAvailableTimes(DateTime newDate) async {
+    try {
+      DateTime currentTime;
+      final endOfDay =
+          DateTime(newDate.year, newDate.month, newDate.day, 23, 59);
 
-    // If the time is before 30 minutes in the hour, round to the next half hour
-    // If the time is after 30 minutes, round up to 1:30 of the next hour
-    if (newDate.minute < 30) {
-      currentTime =
-          DateTime(newDate.year, newDate.month, newDate.day, newDate.hour, 30);
-    } else {
-      // Move to the next hour and start at 30 minutes past that hour
-      currentTime = DateTime(
-          newDate.year, newDate.month, newDate.day, newDate.hour + 1, 30);
+      // If the time is before 30 minutes in the hour, round to the next half hour
+      // If the time is after 30 minutes, round up to 1:30 of the next hour
+      if (newDate.minute < 30) {
+        currentTime = DateTime(
+            newDate.year, newDate.month, newDate.day, newDate.hour, 30);
+      } else {
+        // Move to the next hour and start at 30 minutes past that hour
+        currentTime = DateTime(
+            newDate.year, newDate.month, newDate.day, newDate.hour + 1, 30);
+      }
+
+      List<String> times = [];
+
+      // Generate time slots with 30-minute gaps until end of the day
+      while (currentTime.isBefore(endOfDay)) {
+        times.add(DateFormat.Hm()
+            .format(currentTime)); // Convert time to 12-hour format
+        currentTime = currentTime
+            .add(const Duration(minutes: 30)); // Increment by 30 minutes
+      }
+
+      setState(() {
+        availableTimes = times;
+        selectedTime = availableTimes.isNotEmpty
+            ? availableTimes.first
+            : '';
+      });
+    } catch (e) {
+      print(e);
     }
-
-    List<String> times = [];
-
-    // Generate time slots with 30-minute gaps until end of the day
-    while (currentTime.isBefore(endOfDay)) {
-      times.add(DateFormat.Hm()
-          .format(currentTime)); // Convert time to 12-hour format
-      currentTime = currentTime
-          .add(const Duration(minutes: 30)); // Increment by 30 minutes
-    }
-
-    setState(() {
-      availableTimes = times;
-    });
   }
 
   void onDateChangedHandler(DateTime date) {
@@ -114,6 +118,23 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     return true;
   }
 
+  List<DropdownMenuItem<String>> getDropDownMenu() {
+    // Check if availableTimes is null or empty
+    if (availableTimes.isEmpty) {
+      return [];
+    }
+
+    // Ensure unique values in the dropdown menu
+    final uniqueTimes = availableTimes.toSet().toList();
+
+    // Create the dropdown items
+    return uniqueTimes.map<DropdownMenuItem<String>>((String time) {
+      return DropdownMenuItem<String>(
+        value: time,
+        child: Text(time),
+      );
+    }).toList();
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -247,17 +268,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                                                 }
                                               });
                                             },
-                                            items: availableTimes.isNotEmpty
-                                                ? availableTimes.map<
-                                                    DropdownMenuItem<
-                                                        String>>((String time) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value: time,
-                                                      child: Text(time),
-                                                    );
-                                                  }).toList()
-                                                : [],
+                                            items: getDropDownMenu()
                                           )),
                               ],
                             ),
