@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 import 'package:flutter/services.dart';
+import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
+import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -27,14 +28,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
-
-  final List<Map<String, dynamic>> slidebarBtns = [
-    {'textField': "Live", 'icon': Icons.cell_tower},
-    {'textField': "Wow", 'icon': Icons.emoji_emotions_outlined},
-    {'textField': "Office", 'icon': Icons.business},
-    {'textField': "Industrial", 'icon': Icons.factory_outlined},
-    {'textField': "Flex", 'icon': Icons.warehouse_outlined},
-  ];
 
   final List<Map<String, dynamic>> spaces = [
     {
@@ -147,33 +140,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ),
           // Horizontal Scrollbar Buttons
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.10,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: slidebarBtns.length,
-              itemBuilder: (context, index) {
-                final btn = slidebarBtns[index];
-                return Container(
-                  width: 100,
-                  margin: const EdgeInsets.only(left: 8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(btn['icon'], size: 24),
-                      Text(
-                        btn['textField'],
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
+          const SlideBarButtonList(),
           // Spaces Section
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
