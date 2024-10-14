@@ -1,3 +1,6 @@
+import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
+import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
+import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,7 +11,7 @@ import 'package:cubework_app_client/utils/serializable/locations.dart'
 
 class LocationResultsScreen extends StatefulWidget {
   final ReservedPlace reservedPlace;
-  // final 
+  // final
   const LocationResultsScreen({super.key, required this.reservedPlace});
 
   @override
@@ -24,8 +27,8 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   void initState() {
     super.initState();
     markers = {};
-    cameraPosition =
-        LatLng(widget.reservedPlace.office!.lat, widget.reservedPlace.office!.lng);
+    cameraPosition = LatLng(
+        widget.reservedPlace.office!.lat, widget.reservedPlace.office!.lng);
   }
 
   Map<String, Marker> assignMapMarkers(
@@ -57,6 +60,37 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
     });
   }
 
+  Function(DateTime date, String time, String meridiem) formatString =
+      (DateTime date, String time, String meridiem) {
+    final formattedDate = formatDate(date);
+    return "$formattedDate, $time $meridiem";
+  };
+
+  Function() get searchButtonTitleHandler => () {
+        final reservedPlace = widget.reservedPlace;
+        final startDate = reservedPlace.startDate;
+        final endDate = reservedPlace.endDate;
+
+        if (endDate.date == null && startDate.date != null) {
+          final formattedStartDate = formatString(
+              startDate.date!, startDate.time!, startDate.meridiem!);
+
+          return "$formattedStartDate - $formattedStartDate";
+        }
+
+        if (startDate.date != null && endDate.date != null) {
+          final formattedStartDate = formatString(
+              startDate.date!, startDate.time!, startDate.meridiem!);
+
+          final formattedEndDate = formatString(
+              startDate.date!, startDate.time!, startDate.meridiem!);
+
+          return "$formattedStartDate - $formattedEndDate";
+        }
+
+        return "No date selected";
+      };
+
   @override
   Widget build(
     BuildContext context,
@@ -66,77 +100,135 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
       mapController = controller;
       // need to use then chains to ensure that the markers are being set
       // otherwise the markers will not be set in time (bug)
-      await fetchLocation()
-        .then((offices) {
-          setState(() {
-            markers.clear();
-            markers = assignMapMarkers(offices, widget.reservedPlace.office!);
-          });
-        }).then((_) {
-          assignActiveMarker(widget.reservedPlace.office!);
+      await fetchLocation().then((offices) {
+        setState(() {
+          markers.clear();
+          markers = assignMapMarkers(offices, widget.reservedPlace.office!);
         });
+      }).then((_) {
+        assignActiveMarker(widget.reservedPlace.office!);
+      });
     }
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        title: Text(widget.reservedPlace.office!.name),
-      ),
       body: SlidingUpPanel(
-        renderPanelSheet: false,
-        // panel section
-        panel: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24.0),
-              topRight: Radius.circular(24.0),
+          renderPanelSheet: false,
+          // panel section
+          panel: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.0),
+                topRight: Radius.circular(24.0),
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 10.0,
-                spreadRadius: 5.0,
-                offset: Offset(0.0, 0.0),
+            child: const Center(
+              child: Text(
+                "This is the collapsed Widget",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          // collapsed section
+          collapsed: Container(
+            decoration: const BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24.0),
+                  topRight: Radius.circular(24.0)),
+            ),
+            child: const Center(
+              child: Text(
+                "This is the collapsed Widget",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          // map section
+          body: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        constraints:
+                            const BoxConstraints(maxHeight: double.infinity),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[200],
+                                      elevation: 0),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          ExploreSearchWidget(
+                                        searchBarCloseViewCallback: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ListTile(
+                                        leading: const Icon(Icons.search),
+                                        title: Text(
+                                            widget.reservedPlace.office!.name),
+                                        subtitle: Text(
+                                          searchButtonTitleHandler(),
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(height: 15),
+                              const SlideBarButtonList(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  markers: Set<Marker>.of(markers.values.toSet()),
+                  initialCameraPosition:
+                      CameraPosition(target: cameraPosition, zoom: 15),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.62,
+                      bottom: MediaQuery.of(context).size.height * 0.20),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                ),
               ),
             ],
-          ),
-          child: const Center(
-            child: Text(
-              "This is the collapsed Widget",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        // collapsed section
-        collapsed: Container(
-          decoration: const BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24.0),
-                topRight: Radius.circular(24.0)),
-          ),
-          child: const Center(
-            child: Text(
-              "This is the collapsed Widget",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        // map section
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          markers: Set<Marker>.of(markers.values.toSet()),
-          initialCameraPosition:
-              CameraPosition(target: cameraPosition, zoom: 15),
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.62,
-              bottom: MediaQuery.of(context).size.height * 0.20),
-          myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-        ),
-      ),
+          )),
     );
   }
 }
