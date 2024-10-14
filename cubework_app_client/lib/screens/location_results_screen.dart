@@ -20,6 +20,7 @@ class LocationResultsScreen extends StatefulWidget {
 
 class _LocationResultsScreenState extends State<LocationResultsScreen> {
   late LatLng cameraPosition;
+  int? officeLength = 0;
   late Map<String, Marker> markers;
   late GoogleMapController mapController;
 
@@ -30,10 +31,9 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
     cameraPosition = LatLng(
         widget.reservedPlace.office!.lat, widget.reservedPlace.office!.lng);
   }
-
+  
   Map<String, Marker> assignMapMarkers(
       List<locations.Office> offices, locations.Office reservedPlace) {
-    // ignore: no_leading_underscores_for_local_identifiers
     final Map<String, Marker> _markers = {};
 
     for (final office in offices) {
@@ -44,10 +44,10 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
           title: office.name,
           snippet: office.address,
         ),
-        consumeTapEvents: true,
         icon: office.name == reservedPlace.name
             ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
             : BitmapDescriptor.defaultMarker,
+        consumeTapEvents: false,
       );
       _markers[office.name] = marker;
     }
@@ -103,6 +103,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
       await fetchLocation().then((offices) {
         setState(() {
           markers.clear();
+          officeLength = offices.length;
           markers = assignMapMarkers(offices, widget.reservedPlace.office!);
         });
       }).then((_) {
@@ -125,26 +126,39 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
             ),
             child: const Center(
               child: Text(
-                "This is the collapsed Widget",
+                "This is the panel",
                 style: TextStyle(color: Colors.white),
               ),
             ),
           ),
           // collapsed section
-          collapsed: Container(
-            decoration: const BoxDecoration(
-              color: Colors.blueGrey,
+            collapsed: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: Container(),
+              title: const Icon(Icons.drag_handle),
+              centerTitle: true,
+              backgroundColor: Colors.grey[200],
+              shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.0),
-                  topRight: Radius.circular(24.0)),
-            ),
-            child: const Center(
-              child: Text(
-                "This is the collapsed Widget",
-                style: TextStyle(color: Colors.white),
+                topLeft: Radius.circular(24.0),
+                topRight: Radius.circular(24.0),
+              ),
               ),
             ),
-          ),
+            body: Container(
+              decoration: BoxDecoration(
+              color: Colors.grey[200],
+              ),
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Center(
+              child: Text(
+                  "Over ${officeLength ?? 0} results",
+                style: const TextStyle(color: Colors.black),
+              ),
+              ),
+            ),
+            ),
           // map section
           body: Column(
             children: [
@@ -216,15 +230,12 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
               ),
               Expanded(
                 child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  markers: Set<Marker>.of(markers.values.toSet()),
-                  initialCameraPosition:
-                      CameraPosition(target: cameraPosition, zoom: 15),
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.62,
-                      bottom: MediaQuery.of(context).size.height * 0.20),
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
+                onMapCreated: _onMapCreated,
+                markers: Set<Marker>.of(markers.values.toSet()),
+                initialCameraPosition:
+                    CameraPosition(target: cameraPosition, zoom: 15),
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
                 ),
               ),
             ],
