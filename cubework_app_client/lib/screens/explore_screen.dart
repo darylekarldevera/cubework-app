@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
 import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 
@@ -154,51 +155,52 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 const SizedBox(height: 10),
                 Column(
-                  children: List<Widget>.from(
-                      spaces.map((Map<String, dynamic> space) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.30,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  '${space['image']}',
-                                ),
-                                fit: BoxFit.cover,
+                children: List<Widget>.generate(spaces.length, (index) {
+                  final space = spaces[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                space['image'],
+                                cacheKey: space["image"],
                               ),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("${space['price']}",
-                                      style: const TextStyle(fontSize: 18)),
-                                  Text("${space['discount']}",
-                                      style: const TextStyle(fontSize: 16)),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(Icons.star, size: 24),
-                                  Text('${space['rating']}',
-                                      style: const TextStyle(fontSize: 16)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  })),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("${space['price']}",
+                                    style: const TextStyle(fontSize: 18)),
+                                Text("${space['discount']}",
+                                    style: const TextStyle(fontSize: 16)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, size: 24),
+                                Text('${space['rating']}',
+                                    style: const TextStyle(fontSize: 16)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }),
                 ),
               ],
             ),
