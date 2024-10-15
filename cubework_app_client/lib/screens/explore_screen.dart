@@ -77,68 +77,78 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ),
           // Image Banner Section
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: NetworkImage(
-                  "https://via.placeholder.com/600x400/90EE90/ffffff",
+          Stack(
+            children: [
+                Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                height: 200,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: "https://via.placeholder.com/600x400/90EE90/ffffff",
+                  placeholder: (context, url) => Image.asset(
+                  'lib/assets/images/placeholder_horizontal.jpg',
+                  fit: BoxFit.cover,
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Manage your Logistics",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                ),
+              const Positioned(
+                child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Card(
+                      elevation: 0,
+                      color: Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Manage your Logistics",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                "All in one dashboard.",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "3PL Software",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                "24/7 Support",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        "All in one dashboard.",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "3PL Software",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "24/7 Support",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                    )),
+              )
+            ],
           ),
           // Horizontal Scrollbar Buttons
           const SlideBarButtonList(),
@@ -155,52 +165,55 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 const SizedBox(height: 10),
                 Column(
-                children: List<Widget>.generate(spaces.length, (index) {
-                  final space = spaces[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.30,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                space['image'],
-                                cacheKey: space["image"],
+                  children: List<Widget>.generate(spaces.length, (index) {
+                    final space = spaces[index];
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.30,
+                            width: double.infinity,
+                            child: CachedNetworkImage(
+                              imageUrl: space['image'],
+                              placeholder: (context, url) => Image.asset(
+                                'lib/assets/images/placeholder_horizontal.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                'lib/assets/images/placeholder_horizontal.jpg',
+                                fit: BoxFit.cover,
                               ),
                               fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("${space['price']}",
-                                    style: const TextStyle(fontSize: 18)),
-                                Text("${space['discount']}",
-                                    style: const TextStyle(fontSize: 16)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Icon(Icons.star, size: 24),
-                                Text('${space['rating']}',
-                                    style: const TextStyle(fontSize: 16)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${space['price']}",
+                                      style: const TextStyle(fontSize: 18)),
+                                  Text("${space['discount']}",
+                                      style: const TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(Icons.star, size: 24),
+                                  Text('${space['rating']}',
+                                      style: const TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),
