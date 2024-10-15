@@ -1,17 +1,20 @@
-import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
-import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
-import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+
+import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:cubework_app_client/services/fetch_location.dart';
 import 'package:cubework_app_client/interfaces/reserved_location.dart';
 import 'package:cubework_app_client/utils/serializable/locations.dart'
     as locations;
 
+import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
+import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
+
 class LocationResultsScreen extends StatefulWidget {
   final ReservedPlace reservedPlace;
-  // final
   const LocationResultsScreen({super.key, required this.reservedPlace});
 
   @override
@@ -23,6 +26,9 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   int? officeLength = 0;
   late Map<String, Marker> markers;
   late GoogleMapController mapController;
+  late locations.Office tappedMarkerOfficeDetails =
+      widget.reservedPlace.office!;
+  late bool isMarkerTapped = true;
 
   @override
   void initState() {
@@ -30,8 +36,26 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
     markers = {};
     cameraPosition = LatLng(
         widget.reservedPlace.office!.lat, widget.reservedPlace.office!.lng);
+
+    _initializeMapRenderer();
   }
-  
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  // this is a workaround to fix the issue with the map not rendering on Android
+  // error: 'updateAcquireFence: Did not find frame'
+  void _initializeMapRenderer() {
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      mapsImplementation.useAndroidViewSurface = true;
+    }
+  }
+
   Map<String, Marker> assignMapMarkers(
       List<locations.Office> offices, locations.Office reservedPlace) {
     final Map<String, Marker> _markers = {};
@@ -48,6 +72,12 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
             ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
             : BitmapDescriptor.defaultMarker,
         consumeTapEvents: false,
+        onTap: () => {
+          setState(() {
+            isMarkerTapped = true;
+            tappedMarkerOfficeDetails = office;
+          })
+        },
       );
       _markers[office.name] = marker;
     }
@@ -132,7 +162,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
             ),
           ),
           // collapsed section
-            collapsed: Scaffold(
+          collapsed: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               leading: Container(),
@@ -140,25 +170,25 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
               centerTitle: true,
               backgroundColor: Colors.grey[200],
               shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24.0),
-                topRight: Radius.circular(24.0),
-              ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24.0),
+                  topRight: Radius.circular(24.0),
+                ),
               ),
             ),
             body: Container(
               decoration: BoxDecoration(
-              color: Colors.grey[200],
+                color: Colors.grey[200],
               ),
               padding: const EdgeInsets.only(bottom: 20),
               child: Center(
-              child: Text(
+                child: Text(
                   "Over ${officeLength ?? 0} results",
-                style: const TextStyle(color: Colors.black),
-              ),
+                  style: const TextStyle(color: Colors.black),
+                ),
               ),
             ),
-            ),
+          ),
           // map section
           body: Column(
             children: [
@@ -183,8 +213,8 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey[200],
@@ -229,13 +259,169 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
                 ),
               ),
               Expanded(
-                child: GoogleMap(
-                onMapCreated: _onMapCreated,
-                markers: Set<Marker>.of(markers.values.toSet()),
-                initialCameraPosition:
-                    CameraPosition(target: cameraPosition, zoom: 15),
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
+                child: Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      markers: Set<Marker>.of(markers.values.toSet()),
+                      initialCameraPosition:
+                          CameraPosition(target: cameraPosition, zoom: 15),
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                    ),
+                    isMarkerTapped
+                        ? Positioned(
+                            bottom: MediaQuery.of(context).size.height * 0.12,
+                            left: 0,
+                            right: 0,
+                            child: Card(
+                              color: Colors.white,
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.20,
+                                child: Row(
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: const Image(
+                                            image: AssetImage(
+                                                'lib/assets/images/placeholder_vertical.jpg'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Card(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isMarkerTapped = false;
+                                                    });
+                                                  },
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    child: Icon(Icons.close,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Expanded(
+                                        flex: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "\$2666.99",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                            width:
+                                                                8), // Add space here
+                                                        Text(
+                                                          "\$2745.69",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.grey,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Icon(Icons.star,
+                                                            size: 24),
+                                                        Text('4.8',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        Colors.lightGreen[100],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: const Text("40% OFF",
+                                                      style: TextStyle(
+                                                          color: Colors.green)),
+                                                ),
+                                                Text(tappedMarkerOfficeDetails
+                                                    .address),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.lightBlue[50],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: const Text("Warehouse",
+                                                      style: TextStyle(
+                                                          color: Colors.blue)),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
             ],
