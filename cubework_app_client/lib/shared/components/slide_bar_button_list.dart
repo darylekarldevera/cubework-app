@@ -29,7 +29,7 @@ class SlideBarButtonList extends StatelessWidget {
                   Container(height: 10),
                   Text(
                     btn['textField'],
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
                   ),
                 ],
               ),
