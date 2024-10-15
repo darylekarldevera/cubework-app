@@ -295,16 +295,13 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
                                           ),
                                         ),
                                         Positioned(
-                                          top: 0,
+                                          top: 10,
                                           left: 0,
                                           right: 0,
                                           child: Align(
                                             alignment: Alignment.topCenter,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Card(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
+                                            child: Card(
+                                                color: Colors.transparent,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(20),
@@ -317,15 +314,42 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
                                                   },
                                                   child: const Padding(
                                                     padding:
-                                                        EdgeInsets.all(8.0),
+                                                        EdgeInsets.all(5.0),
                                                     child: Icon(Icons.close,
                                                         color: Colors.white),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
+                                              )
                                           ),
-                                        )
+                                        ),
+                                        Positioned(
+                                          bottom: 10,
+                                          left: 0,
+                                          right: 0,
+                                          child: Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Card(
+                                                color: Colors.transparent,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isMarkerTapped = false;
+                                                    });
+                                                  },
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(5.0),
+                                                    child: Icon(
+                                                        Icons.favorite_outline,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
                                       ],
                                     ),
                                     Expanded(
