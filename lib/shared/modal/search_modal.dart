@@ -3,7 +3,7 @@ import 'package:cubework_app_client/services/fetch_location.dart';
 import 'package:cubework_app_client/utils/serializable/locations.dart';
 
 class SearchModal extends StatefulWidget {
-  final void Function(Office) getLocationCallback;
+  final void Function(Warehouse) getLocationCallback;
   const SearchModal({super.key, required this.getLocationCallback});
 
   @override
@@ -11,7 +11,7 @@ class SearchModal extends StatefulWidget {
 
   // Static method to show the modal
   static void show(
-      BuildContext context, void Function(Office) getLocationCallback) {
+      BuildContext context, void Function(Warehouse) getLocationCallback) {
     showModalBottomSheet(
       context: context,
       // Makes it full screen
@@ -28,8 +28,8 @@ class SearchModal extends StatefulWidget {
 
 class _SearchModalState extends State<SearchModal> {
   bool isLoading = true;
-  List<Office> items = [];
-  List<Office> filteredItems = [];
+  List<Warehouse> items = [];
+  List<Warehouse> filteredItems = [];
 
   @override
   void initState() {

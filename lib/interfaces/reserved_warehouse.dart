@@ -1,7 +1,7 @@
 import 'package:cubework_app_client/utils/serializable/locations.dart';
 
-abstract class ReservedPlace {
-  Office? get office;
+abstract class ReservedWarehouse {
+  Warehouse get warehouse;
   DateTimeInfo get startDate;
   DateTimeInfo get endDate;
 }
@@ -14,9 +14,9 @@ class DateTimeInfo {
   DateTimeInfo({ this.date, this.time, this.meridiem });
 }
 
-class ReservedPlaceImpl implements ReservedPlace {
+class ReservedWarehouseImpl implements ReservedWarehouse {
   @override
-  Office? office;
+  Warehouse warehouse;
 
   @override
   DateTimeInfo startDate;
@@ -24,8 +24,8 @@ class ReservedPlaceImpl implements ReservedPlace {
   @override
   DateTimeInfo endDate;
 
-  ReservedPlaceImpl({
-    required this.office,
+  ReservedWarehouseImpl({
+    required this.warehouse,
     required this.startDate,
     required this.endDate,
   });

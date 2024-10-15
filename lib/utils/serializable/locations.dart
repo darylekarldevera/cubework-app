@@ -22,8 +22,8 @@ class LatLng {
 }
 
 @JsonSerializable()
-class Office {
-  Office({
+class Warehouse {
+  Warehouse({
     required this.address,
     required this.lat,
     required this.lng,
@@ -31,8 +31,8 @@ class Office {
     required this.city,
   });
 
-  factory Office.fromJson(Map<String, dynamic> json) => _$OfficeFromJson(json);
-  Map<String, dynamic> toJson() => _$OfficeToJson(this);
+  factory Warehouse.fromJson(Map<String, dynamic> json) => _$WarehouseFromJson(json);
+  Map<String, dynamic> toJson() => _$WarehouseToJson(this);
 
   final String address;
   final double lat;
@@ -44,19 +44,19 @@ class Office {
 @JsonSerializable()
 class Locations {
   Locations({
-    required this.offices,
+    required this.warehouses,
   });
 
   factory Locations.fromJson(Map<String, dynamic> json) =>
       _$LocationsFromJson(json);
   Map<String, dynamic> toJson() => _$LocationsToJson(this);
 
-  final List<Office> offices;
+  final List<Warehouse> warehouses;
 }
 
 Future<Locations> getUnitOfferingLocations() async {
   String locationsURL = await rootBundle.loadString('lib/assets/locations.json');
-  // Retrieve the locations of Google offices
+  // Retrieve the locations of Google Warehouses
   try {
     final response = await http.get(Uri.parse(locationsURL));
     if (response.statusCode == 200) {

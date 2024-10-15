@@ -16,7 +16,7 @@ Map<String, dynamic> _$LatLngToJson(LatLng instance) => <String, dynamic>{
       'lng': instance.lng,
     };
 
-Office _$OfficeFromJson(Map<String, dynamic> json) => Office(
+Warehouse _$WarehouseFromJson(Map<String, dynamic> json) => Warehouse(
       address: json['address'] as String,
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
@@ -24,7 +24,7 @@ Office _$OfficeFromJson(Map<String, dynamic> json) => Office(
       city: json['city'] as String,
     );
 
-Map<String, dynamic> _$OfficeToJson(Office instance) => <String, dynamic>{
+Map<String, dynamic> _$WarehouseToJson(Warehouse instance) => <String, dynamic>{
       'address': instance.address,
       'lat': instance.lat,
       'lng': instance.lng,
@@ -33,11 +33,11 @@ Map<String, dynamic> _$OfficeToJson(Office instance) => <String, dynamic>{
     };
 
 Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(
-      offices: (json['offices'] as List<dynamic>)
-          .map((e) => Office.fromJson(e as Map<String, dynamic>))
+      warehouses: (json['warehouses'] as List<dynamic>)
+          .map((e) => Warehouse.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$LocationsToJson(Locations instance) => <String, dynamic>{
-      'offices': instance.offices,
+      'warehouses': instance.warehouses,
     };
