@@ -41,16 +41,6 @@ class Location {
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 }
 
-
-
-class ProfileMark {
-  final String name;
-  final DateTime start = DateTime.now();
-
-  ProfileMark(this.name);
-  ProfileMark.unnamed() : name = '';
-}
-
 @JsonSerializable()
 class PropertyDetails {
   final String clearHeight;
@@ -59,11 +49,11 @@ class PropertyDetails {
   final int interiorDockDoors;
   final int driveInBays;
   final int driveInDoors;
-  final String rail;
-  final String crane;
-  final String yard;
-  final String trailerParking;
-  final String officeSpace;
+  final bool rail;
+  final bool crane;
+  final bool yard;
+  final bool trailerParking;
+  final bool officeSpace;
   final int standardParkingSpaces;
   final int trailerParkingSpaces;
   final int totalParkingSpaces;
@@ -75,11 +65,11 @@ class PropertyDetails {
     this.interiorDockDoors = 0,
     this.driveInBays = 0,
     this.driveInDoors = 0,
-    this.rail = '',
-    this.crane = '',
-    this.yard = '',
-    this.trailerParking = '',
-    this.officeSpace = '',
+    this.rail = false,
+    this.crane = false,
+    this.yard = false,
+    this.trailerParking = false,
+    this.officeSpace = false,
     this.standardParkingSpaces = 0,
     this.trailerParkingSpaces = 0,
     this.totalParkingSpaces = 0,
@@ -93,19 +83,83 @@ class PropertyDetails {
 
 
 @JsonSerializable()
+class Amenities {
+  final bool minStorageUnits;
+  final bool loadingDocks;
+  final bool climateControl;
+  final bool onSiteStaff;
+  final bool packagingSupplies;
+  final bool rackingSystems;
+  final bool securitySystems;
+  final bool fireSuppressionSystems;
+  final bool access24_7;
+  final bool forkliftAvailability;
+  final bool wifiAccess;
+  final bool backupGenerators;
+  final bool cctvSurveillance;
+  final bool accessControlSystems;
+  final bool palletJacks;
+  final bool sprinklerSystems;
+  final bool breakRooms;
+  final bool conferenceRooms;
+  final bool restrooms;
+  final bool truckParking;
+  final bool wasteDisposal;
+  final bool elevatorAccess;
+  final bool highCeilings;
+  final bool ventilationSystems;
+  final bool energyEfficientLighting;
+
+  Amenities({
+    this.minStorageUnits = false,
+    this.loadingDocks = false,
+    this.climateControl = false,
+    this.onSiteStaff = false,
+    this.packagingSupplies = false,
+    this.rackingSystems = false,
+    this.securitySystems = false,
+    this.fireSuppressionSystems = false,
+    this.access24_7 = false,
+    this.forkliftAvailability = false,
+    this.wifiAccess = false,
+    this.backupGenerators = false,
+    this.cctvSurveillance = false,
+    this.accessControlSystems = false,
+    this.palletJacks = false,
+    this.sprinklerSystems = false,
+    this.breakRooms = false,
+    this.conferenceRooms = false,
+    this.restrooms = false,
+    this.truckParking = false,
+    this.wasteDisposal = false,
+    this.elevatorAccess = false,
+    this.highCeilings = false,
+    this.ventilationSystems = false,
+    this.energyEfficientLighting = false,
+  });
+
+  factory Amenities.fromJson(Map<String, dynamic> json) =>
+      _$AmenitiesFromJson(json);
+  Map<String, dynamic> toJson() => _$AmenitiesToJson(this);
+}
+
+@JsonSerializable()
 class Warehouse {
   final String name;
   final String description;
   final Location location;
   final PropertyDetails propertyDetails;
+  final Amenities amenities;
 
   Warehouse({
     this.name = '',
     this.description = '',
     Location? location,
     PropertyDetails? propertyDetails,
+    Amenities? amenities,
   })  : location = location ?? Location(),
-        propertyDetails = propertyDetails ?? PropertyDetails();
+        propertyDetails = propertyDetails ?? PropertyDetails(),
+        amenities = amenities ?? Amenities();
 
   factory Warehouse.fromJson(Map<String, dynamic> json) =>
       _$WarehouseFromJson(json);
