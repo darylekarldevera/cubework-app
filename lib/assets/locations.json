@@ -2,11 +2,13 @@
   "warehouses": [
     {
       "name": "Colegio San Agustin Makati",
-      "city": "Makati",
-      "address": "Palm Ave, Makati, Metro Manila",
-      "lat": 14.5423396,
-      "lng": 121.0229465,
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "location": {
+        "city": "Makati",
+        "address": "Ayala Ave, Makati, 1209 Metro Manila",
+        "lat": 14.5547,
+        "lng": 121.0244
+      },
       "propertyDetails": {
         "clearHeight": "32'",
         "warehouseFloor": "6\"",
@@ -26,11 +28,13 @@
     },
     {
       "name": "Tower 6789 - CubeWork PH",
-      "city": "Makati",
-      "address": "6789 Ayala Ave, Makati, 1206 Metro Manila",
-      "lat": 14.5406867,
-      "lng": 121.0091576,
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "location": {
+        "city": "Makati",
+        "address": "6789 Ayala Ave, Makati, 1206 Metro Manila",
+        "lat": 14.5406867,
+        "lng": 121.0091576
+      },
       "propertyDetails": {
         "clearHeight": "28'",
         "warehouseFloor": "8\"",
@@ -50,11 +54,13 @@
     },
     {
       "name": "Greenbelt",
-      "city": "Makati",
-      "address": "Legazpi Street, Legazpi Village, Makati, Kalakhang Maynila",
-      "lat": 14.5497606,
-      "lng": 121.0190774,
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "location": {
+        "city": "Makati",
+        "address": "Legazpi Street, Legazpi Village, Makati, Kalakhang Maynila",
+        "lat": 14.5497606,
+        "lng": 121.0190774
+      },
       "propertyDetails": {
         "clearHeight": "35'",
         "warehouseFloor": "5\"",
@@ -74,11 +80,13 @@
     },
     {
       "name": "San Beda University",
-      "city": "Manila",
-      "address": "638 Mendiola St, San Miguel, Manila, 1005 Metro Manila",
-      "lat": 14.600564,
-      "lng": 120.9782776,
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "location": {
+        "city": "Manila",
+        "address": "638 Mendiola St, San Miguel, Manila, 1005 Metro Manila",
+        "lat": 14.600564,
+        "lng": 120.9782776
+      },
       "propertyDetails": {
         "clearHeight": "30'",
         "warehouseFloor": "7\"",
@@ -98,11 +106,13 @@
     },
     {
       "name": "Far Eastern University",
-      "city": "Manila",
-      "address": "Nicanor Reyes Sr, Street, Sampaloc, Manila, 1008 Metro Manila",
-      "lat": 14.600564,
-      "lng": 120.9782776,
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "location": {
+        "city": "Manila",
+        "address": "Nicanor Reyes Sr, Street, Sampaloc, Manila, 1008 Metro Manila",
+        "lat": 14.600564,
+        "lng": 120.9782776
+      },
       "propertyDetails": {
         "clearHeight": "25'",
         "warehouseFloor": "6\"",
