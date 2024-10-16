@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/screens/warehouse_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,10 +24,10 @@ class LocationResultsScreen extends StatefulWidget {
 
 class _LocationResultsScreenState extends State<LocationResultsScreen> {
   late LatLng cameraPosition;
-  int? officeLength = 0;
+  int? warehouseLength = 0;
   late Map<String, Marker> markers;
   late GoogleMapController mapController;
-  late locations.Warehouse tappedMarkerOfficeDetails =
+  late locations.Warehouse tappedMarkerWarehouseDetails =
       widget.reserveWarehouse.warehouse;
   late bool isMarkerTapped = true;
 
@@ -34,8 +35,8 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   void initState() {
     super.initState();
     markers = {};
-    cameraPosition = LatLng(widget.reserveWarehouse.warehouse.lat,
-        widget.reserveWarehouse.warehouse.lng);
+    cameraPosition = LatLng(widget.reserveWarehouse.warehouse.location.lat,
+        widget.reserveWarehouse.warehouse.location.lng);
 
     _initializeMapRenderer();
   }
@@ -57,36 +58,36 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   }
 
   Map<String, Marker> assignMapMarkers(
-      List<locations.Warehouse> offices, locations.Warehouse reserveWarehouse) {
+      List<locations.Warehouse> warehouses, locations.Warehouse reserveWarehouse) {
     final Map<String, Marker> _markers = {};
 
-    for (final office in offices) {
+    for (final warehouse in warehouses) {
       final marker = Marker(
-        markerId: MarkerId(office.name),
-        position: LatLng(office.lat, office.lng),
+        markerId: MarkerId(warehouse.name),
+        position: LatLng(warehouse.location.lat, warehouse.location.lng),
         infoWindow: InfoWindow(
-          title: office.name,
-          snippet: office.address,
+          title: warehouse.name,
+          snippet: warehouse.location.address,
         ),
-        icon: office.name == reserveWarehouse.name
+        icon: warehouse.name == reserveWarehouse.name
             ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
             : BitmapDescriptor.defaultMarker,
         consumeTapEvents: false,
         onTap: () => {
           setState(() {
             isMarkerTapped = true;
-            tappedMarkerOfficeDetails = office;
+            tappedMarkerWarehouseDetails = warehouse;
           })
         },
       );
-      _markers[office.name] = marker;
+      _markers[warehouse.name] = marker;
     }
     return _markers;
   }
 
-  void assignActiveMarker(locations.Warehouse office) {
+  void assignActiveMarker(locations.Warehouse warehouse) {
     Future.delayed(const Duration(milliseconds: 500), () {
-      mapController.showMarkerInfoWindow(MarkerId(office.name));
+      mapController.showMarkerInfoWindow(MarkerId(warehouse.name));
     });
   }
 
@@ -130,12 +131,12 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
       mapController = controller;
       // need to use then chains to ensure that the markers are being set
       // otherwise the markers will not be set in time (bug)
-      await fetchLocation().then((offices) {
+      await fetchLocation().then((warehouses) {
         setState(() {
           markers.clear();
-          officeLength = offices.length;
+          warehouseLength = warehouses.length;
           markers =
-              assignMapMarkers(offices, widget.reserveWarehouse.warehouse);
+              assignMapMarkers(warehouses, widget.reserveWarehouse.warehouse);
         });
       }).then((_) {
         assignActiveMarker(widget.reserveWarehouse.warehouse);
@@ -184,7 +185,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
               padding: const EdgeInsets.only(bottom: 20),
               child: Center(
                 child: Text(
-                  "Over ${officeLength ?? 0} results",
+                  "Over ${warehouseLength ?? 0} results",
                   style: const TextStyle(color: Colors.black),
                 ),
               ),
@@ -277,206 +278,191 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
                             bottom: MediaQuery.of(context).size.height * 0.12,
                             left: 0,
                             right: 0,
-                            child: Card(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return WarehouseDetailsScreen(warehouse: tappedMarkerWarehouseDetails);
+                                }));
+                              },
+                              child: Card(
                                 color: Colors.white,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isMarkerTapped = false;
-                                    });
-                                  },
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.20,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: const Image(
-                                                  image: AssetImage(
-                                                      'lib/assets/images/placeholder_vertical.jpg'),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              Positioned(
-                                                top: 10,
-                                                left: 0,
-                                                right: 0,
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.topCenter,
-                                                    child: Card(
-                                                      color: Colors.transparent,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            isMarkerTapped =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  5.0),
-                                                          child: Icon(
-                                                              Icons.close,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ),
-                                              Positioned(
-                                                bottom: 10,
-                                                left: 0,
-                                                right: 0,
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.topCenter,
-                                                    child: Card(
-                                                      color: Colors.transparent,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            isMarkerTapped =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  5.0),
-                                                          child: Icon(
-                                                              Icons
-                                                                  .favorite_outline,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ),
-                                            ],
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.20,
+                                  child: Row(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage(
+                                                  'lib/assets/images/placeholder_vertical.jpg'),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: SizedBox(
-                                                width: double.infinity,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "\$2666.99",
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
+                                          Positioned(
+                                            top: 10,
+                                            left: 0,
+                                            right: 0,
+                                            child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Card(
+                                                  color: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isMarkerTapped = false;
+                                                      });
+                                                    },
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5.0),
+                                                      child: Icon(Icons.close,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                )),
+                                          ),
+                                          Positioned(
+                                            bottom: 10,
+                                            left: 0,
+                                            right: 0,
+                                            child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Card(
+                                                  color: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isMarkerTapped = false;
+                                                      });
+                                                    },
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5.0),
+                                                      child: Icon(
+                                                          Icons
+                                                              .favorite_outline,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                      Expanded(
+                                          flex: 2,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "\$2666.99",
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
-                                                            SizedBox(
-                                                                width:
-                                                                    8), // Add space here
-                                                            Text(
-                                                              "\$2745.69",
-                                                              style: TextStyle(
-                                                                fontSize: 12,
-                                                                color:
-                                                                    Colors.grey,
-                                                                decoration:
-                                                                    TextDecoration
-                                                                        .lineThrough,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Icon(Icons.star,
-                                                                size: 24),
-                                                            Text('4.8',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16)),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .lightGreen[100],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: const Text(
-                                                          "40% OFF",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .green)),
-                                                    ),
-                                                    Text(
-                                                        tappedMarkerOfficeDetails
-                                                            .address),
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .lightBlue[50],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: const Text(
-                                                          "Warehouse",
-                                                          style: TextStyle(
+                                                          ),
+                                                          SizedBox(
+                                                              width:
+                                                                  8), // Add space here
+                                                          Text(
+                                                            "\$2745.69",
+                                                            style: TextStyle(
+                                                              fontSize: 12,
                                                               color:
-                                                                  Colors.blue)),
+                                                                  Colors.grey,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Icon(Icons.star,
+                                                              size: 24),
+                                                          Text('4.8',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      16)),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors
+                                                          .lightGreen[100],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
                                                     ),
-                                                  ],
-                                                ),
+                                                    child: const Text("40% OFF",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.green)),
+                                                  ),
+                                                  Text(
+                                                      tappedMarkerWarehouseDetails.location
+                                                      .address),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.lightBlue[50],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    child: const Text(
+                                                        "Warehouse",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.blue)),
+                                                  ),
+                                                ],
                                               ),
-                                            ))
-                                      ],
-                                    ),
+                                            ),
+                                          ))
+                                    ],
                                   ),
-                                )),
-                          )
+                                ),
+                              ),
+                            ))
                         : Container(),
                   ],
                 ),
