@@ -1,6 +1,6 @@
+import 'package:cubework_app_client/models/warehouse.dart';
+import 'package:cubework_app_client/services/fetch_warehouse_locations.dart';
 import 'package:flutter/material.dart';
-import 'package:cubework_app_client/services/fetch_location.dart';
-import 'package:cubework_app_client/utils/serializable/locations.dart';
 
 class SearchModal extends StatefulWidget {
   final void Function(Warehouse) getLocationCallback;
@@ -39,7 +39,7 @@ class _SearchModalState extends State<SearchModal> {
 
   void getLocation() async {
     Future.delayed(const Duration(seconds: 3));
-    final data = await fetchLocation();
+    final data = await fetchWarehouseLocations();
     setState(() {
       items = data;
       filteredItems = data;

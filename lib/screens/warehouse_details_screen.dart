@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cubework_app_client/constants/warehouse_amenities_icons.dart';
-import 'package:cubework_app_client/utils/camel_to_sentence.dart';
-import 'package:cubework_app_client/utils/serializable/locations.dart';
 import 'package:flutter/material.dart';
+import 'package:cubework_app_client/models/warehouse.dart';
+import 'package:cubework_app_client/utils/object_keys.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cubework_app_client/utils/camel_to_sentence.dart';
+import 'package:cubework_app_client/constants/warehouse_amenities_icons.dart';
 
 class WarehouseDetailsScreen extends StatefulWidget {
   final Warehouse warehouse;
@@ -17,10 +18,6 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
   bool isShowMoreDescription = false;
   bool isShowMorePropertyDetails = false;
   bool isShowMoreAmenities = false;
-
-  List<String> objectKeys(dynamic propertyDetails) {
-    return propertyDetails.toJson().keys.toList();
-  }
 
   @override
   initState() {
@@ -335,6 +332,7 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
                         if (!isShowMorePropertyDetails && index > 4) {
                           return Container();
                         }
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -408,12 +406,9 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
                         final key = entry.value;
 
                         // Show only 5 items if show more is not clicked
-                        if (!isShowMoreAmenities && index > 4) {
-                          return Container();
-                        }
-
                         // if the value is false, return none
-                        if (_warehouse.amenities.toJson()[key] == false) {
+                        if (!isShowMoreAmenities && index > 4 ||
+                            _warehouse.amenities.toJson()[key] == false) {
                           return Container();
                         }
 

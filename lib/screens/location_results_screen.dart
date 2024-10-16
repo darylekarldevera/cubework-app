@@ -1,4 +1,6 @@
+import 'package:cubework_app_client/models/warehouse.dart';
 import 'package:cubework_app_client/screens/warehouse_details_screen.dart';
+import 'package:cubework_app_client/services/fetch_warehouse_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,9 +9,6 @@ import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 import 'package:cubework_app_client/utils/format_date.dart';
-import 'package:cubework_app_client/services/fetch_location.dart';
-import 'package:cubework_app_client/utils/serializable/locations.dart'
-    as locations;
 
 import 'package:cubework_app_client/shared/components/slide_bar_button_list.dart';
 import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
@@ -27,7 +26,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   int? warehouseLength = 0;
   late Map<String, Marker> markers;
   late GoogleMapController mapController;
-  late locations.Warehouse tappedMarkerWarehouseDetails =
+  late Warehouse tappedMarkerWarehouseDetails =
       widget.reserveWarehouse.warehouse;
   late bool isMarkerTapped = true;
 
@@ -58,7 +57,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
   }
 
   Map<String, Marker> assignMapMarkers(
-      List<locations.Warehouse> warehouses, locations.Warehouse reserveWarehouse) {
+      List<Warehouse> warehouses, Warehouse reserveWarehouse) {
     final Map<String, Marker> _markers = {};
 
     for (final warehouse in warehouses) {
@@ -85,7 +84,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
     return _markers;
   }
 
-  void assignActiveMarker(locations.Warehouse warehouse) {
+  void assignActiveMarker(Warehouse warehouse) {
     Future.delayed(const Duration(milliseconds: 500), () {
       mapController.showMarkerInfoWindow(MarkerId(warehouse.name));
     });
@@ -131,7 +130,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
       mapController = controller;
       // need to use then chains to ensure that the markers are being set
       // otherwise the markers will not be set in time (bug)
-      await fetchLocation().then((warehouses) {
+      await fetchWarehouseLocations().then((warehouses) {
         setState(() {
           markers.clear();
           warehouseLength = warehouses.length;

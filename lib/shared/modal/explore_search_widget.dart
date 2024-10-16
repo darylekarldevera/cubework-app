@@ -1,8 +1,10 @@
+import 'package:cubework_app_client/models/location.dart';
+import 'package:cubework_app_client/models/property_details.dart';
+import 'package:cubework_app_client/models/warehouse.dart';
 import 'package:cubework_app_client/screens/Location_results_screen.dart';
 import 'package:cubework_app_client/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:cubework_app_client/interfaces/reserved_warehouse.dart';
-import 'package:cubework_app_client/utils/serializable/locations.dart';
 
 import 'package:cubework_app_client/shared/modal/search_modal.dart';
 import 'package:cubework_app_client/shared/modal/date_picker_widget.dart';

@@ -1,4 +1,6 @@
-import 'package:cubework_app_client/utils/serializable/locations.dart';
+
+
+import 'package:cubework_app_client/models/warehouse.dart';
 
 abstract class ReservedWarehouse {
   Warehouse get warehouse;
