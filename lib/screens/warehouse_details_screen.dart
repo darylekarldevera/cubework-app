@@ -36,12 +36,14 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
     return "${_warehouse.description.substring(0, 50)}...";
   }
 
-  String getPropertyValue(dynamic value) {
+  String getPropertyValue(dynamic key) {
+    final value =_warehouse.propertyDetails.toJson()[key];
+    
     if (value is bool) {
       return value ? "Yes" : "No";
     }
 
-    return _warehouse.propertyDetails.toJson()[value].toString();
+    return value.toString();
   }
 
   @override
