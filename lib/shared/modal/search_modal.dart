@@ -51,7 +51,8 @@ class _SearchModalState extends State<SearchModal> {
     setState(() {
       filteredItems = items
           .where(
-              (item) => item.city.toLowerCase().contains(searchText.toLowerCase()))
+              (item) => item.location.city
+              .toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
@@ -137,7 +138,7 @@ class _SearchModalState extends State<SearchModal> {
                         filteredItems[index].name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(filteredItems[index].address),
+                      subtitle: Text(filteredItems[index].location.address),
                       shape: Border(
                         bottom: BorderSide(
                           width: 2,

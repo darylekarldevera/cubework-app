@@ -25,7 +25,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
   void initState() {
     super.initState();
     reservedWarehouse = ReservedWarehouseImpl(
-      warehouse: Warehouse(address: "", lat: 0, lng: 0, name: "", city: ""),
+      warehouse: Warehouse(location: Location(), propertyDetails: PropertyDetails()),
       startDate: DateTimeInfo(),
       endDate: DateTimeInfo(),
     );
@@ -126,7 +126,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
           return formatString(endDate.date!, endDate.time!, endDate.meridiem!);
         }
 
-        if (value == "Location" && reservedWarehouse.warehouse.name.isNotEmpty) {
+        if (value == "Location" && reservedWarehouse.warehouse.name != '') {
           return reservedWarehouse.warehouse.name;
         }
 
@@ -134,7 +134,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
       };
 
   Function(String) get buttonColorHandler => (String value) {
-        if (value == "Start Date" && reservedWarehouse.warehouse.name.isEmpty) {
+        if (value == "Start Date" && reservedWarehouse.warehouse.name == '') {
           return Colors.grey.shade500;
         }
 
@@ -147,7 +147,7 @@ class _ExploreSearchWidgetState extends State<ExploreSearchWidget> {
       };
 
   Function(String) get disableButtonHandler => (String value) {
-        if (value == "Start Date" && reservedWarehouse.warehouse.name.isEmpty) {
+        if (value == "Start Date" && reservedWarehouse.warehouse.name == '') {
           return true;
         }
 
