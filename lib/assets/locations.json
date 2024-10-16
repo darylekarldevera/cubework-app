@@ -5,35 +5,120 @@
       "city": "Makati",
       "address": "Palm Ave, Makati, Metro Manila",
       "lat": 14.5423396,
-      "lng": 121.0229465
+      "lng": 121.0229465,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "propertyDetails": {
+        "clearHeight": "32'",
+        "warehouseFloor": "6\"",
+        "exteriorDockDoors": 44,
+        "interiorDockDoors": 4,
+        "driveInBays": 4,
+        "driveInDoors": 2,
+        "rail": "No",
+        "crane": "No",
+        "yard": "Yes",
+        "trailerParking": "Yes",
+        "officeSpace": "Yes",
+        "standardParkingSpaces": 100,
+        "trailerParkingSpaces": 50,
+        "totalParkingSpaces": 150
+      }
     },
     {
       "name": "Tower 6789 - CubeWork PH",
       "city": "Makati",
       "address": "6789 Ayala Ave, Makati, 1206 Metro Manila",
       "lat": 14.5406867,
-      "lng": 121.0091576
+      "lng": 121.0091576,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "propertyDetails": {
+        "clearHeight": "28'",
+        "warehouseFloor": "8\"",
+        "exteriorDockDoors": 30,
+        "interiorDockDoors": 6,
+        "driveInBays": 5,
+        "driveInDoors": 3,
+        "rail": "Yes",
+        "crane": "Yes",
+        "yard": "No",
+        "trailerParking": "No",
+        "officeSpace": "Yes",
+        "standardParkingSpaces": 80,
+        "trailerParkingSpaces": 20,
+        "totalParkingSpaces": 100
+      }
     },
     {
       "name": "Greenbelt",
       "city": "Makati",
       "address": "Legazpi Street, Legazpi Village, Makati, Kalakhang Maynila",
       "lat": 14.5497606,
-      "lng": 121.0190774
+      "lng": 121.0190774,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "propertyDetails": {
+        "clearHeight": "35'",
+        "warehouseFloor": "5\"",
+        "exteriorDockDoors": 50,
+        "interiorDockDoors": 10,
+        "driveInBays": 8,
+        "driveInDoors": 4,
+        "rail": "No",
+        "crane": "Yes",
+        "yard": "Yes",
+        "trailerParking": "Yes",
+        "officeSpace": "No",
+        "standardParkingSpaces": 120,
+        "trailerParkingSpaces": 60,
+        "totalParkingSpaces": 180
+      }
     },
     {
       "name": "San Beda University",
       "city": "Manila",
       "address": "638 Mendiola St, San Miguel, Manila, 1005 Metro Manila",
       "lat": 14.600564,
-      "lng": 120.9782776
+      "lng": 120.9782776,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "propertyDetails": {
+        "clearHeight": "30'",
+        "warehouseFloor": "7\"",
+        "exteriorDockDoors": 40,
+        "interiorDockDoors": 5,
+        "driveInBays": 6,
+        "driveInDoors": 3,
+        "rail": "Yes",
+        "crane": "No",
+        "yard": "No",
+        "trailerParking": "Yes",
+        "officeSpace": "Yes",
+        "standardParkingSpaces": 90,
+        "trailerParkingSpaces": 45,
+        "totalParkingSpaces": 135
+      }
     },
     {
       "name": "Far Eastern University",
       "city": "Manila",
       "address": "Nicanor Reyes Sr, Street, Sampaloc, Manila, 1008 Metro Manila",
       "lat": 14.600564,
-      "lng": 120.9782776
+      "lng": 120.9782776,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec consequat ipsum, non feugiat mi. Praesent nec risus rhoncus, pellentesque orci a, bibendum eros. Praesent porta, nisi in eleifend cursus, quam purus sodales eros, a elementum metus neque non nunc. Duis in purus eget dui luctus rutrum ac a risus. Nulla efficitur orci quis nulla viverra gravida. Nullam eget nisl lobortis, venenatis ante lacinia, fermentum massa. Ut eu tristique lorem, non elementum mauris. Praesent vitae dictum felis. Cras luctus augue non elit convallis, congue aliquet massa tristique. Aenean sit amet ipsum id lectus elementum interdum blandit eu odio. Phasellus mi elit, vehicula vitae risus eu, aliquet porttitor diam. Mauris lobortis tincidunt purus vel pretium. Praesent tincidunt, ipsum et dignissim posuere, lectus lacus vulputate lectus, et ultrices justo felis ultrices nunc. Pellentesque dictum eget ipsum vel cursus.",
+      "propertyDetails": {
+        "clearHeight": "25'",
+        "warehouseFloor": "6\"",
+        "exteriorDockDoors": 35,
+        "interiorDockDoors": 7,
+        "driveInBays": 5,
+        "driveInDoors": 2,
+        "rail": "No",
+        "crane": "No",
+        "yard": "Yes",
+        "trailerParking": "No",
+        "officeSpace": "Yes",
+        "standardParkingSpaces": 70,
+        "trailerParkingSpaces": 30,
+        "totalParkingSpaces": 100
+      }
     }
   ]
 }
