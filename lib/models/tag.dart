@@ -5,10 +5,10 @@ part 'tag.g.dart';
 
 @JsonSerializable()
 class Tag {
-  final List<String> tags;
+  final List<String> label;
 
   Tag({
-    this.tags = const [],
+    this.label = const [],
   });
 
   factory Tag.fromJson(Map<String, dynamic> json) => 
