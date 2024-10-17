@@ -38,7 +38,7 @@ class _LocationResultsScreenState extends State<LocationResultsScreen> {
 
   void tappedIconMarkerHandler(Warehouse warehouse) {
     setState(() {
-      isMarkerTapped = !isMarkerTapped;
+      isMarkerTapped = true;
       tappedMarkerWarehouseDetails = warehouse;
     });
   }
