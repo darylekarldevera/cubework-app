@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/utils/assign_active_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
@@ -55,7 +56,7 @@ class _LocationGoogleMapsState extends State<LocationGoogleMaps> {
         markers = assignMapMarkers(warehouses, widget.reserveWarehouse);
       });
     }).then((_) {
-      assignActiveMarker(widget.reserveWarehouse);
+      assignActiveMarker(widget.reserveWarehouse, mapController);
     });
   }
 
@@ -82,12 +83,6 @@ class _LocationGoogleMapsState extends State<LocationGoogleMaps> {
       _markers[warehouse.name] = marker;
     }
     return _markers;
-  }
-
-  void assignActiveMarker(Warehouse warehouse) {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      mapController.showMarkerInfoWindow(MarkerId(warehouse.name));
-    });
   }
 
    // this is a workaround to fix the issue with the map not rendering on Android
