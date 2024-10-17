@@ -1,5 +1,5 @@
-import 'package:cubework_app_client/models/warehouse.dart';
 import 'package:flutter/material.dart';
+import 'package:cubework_app_client/models/warehouse.dart';
 
 class LocationFloatingWarehousePricingDetails extends StatelessWidget {
   final Warehouse tappedMarkerWarehouseDetails;
@@ -18,22 +18,22 @@ class LocationFloatingWarehousePricingDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         Text(
-                          "\$2666.99",
-                          style: TextStyle(
+                          "\$${tappedMarkerWarehouseDetails.price.currentPrice}",
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 8), // Add space here
+                        const SizedBox(width: 8), // Add space here
                         Text(
-                          "\$2745.69",
-                          style: TextStyle(
+                          "\$${tappedMarkerWarehouseDetails.price.originalPrice}",
+                          style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough,
@@ -43,8 +43,9 @@ class LocationFloatingWarehousePricingDetails extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Icon(Icons.star, size: 24),
-                        Text('4.8', style: TextStyle(fontSize: 16)),
+                        const Icon(Icons.star, size: 24),
+                        Text("${tappedMarkerWarehouseDetails.rating.stars}",
+                            style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                   ],
