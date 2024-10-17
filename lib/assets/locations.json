@@ -5,9 +5,9 @@
       "description": "A spacious warehouse located in the heart of Makati, ideal for large-scale storage needs.",
       "location": {
         "city": "Makati",
-        "address": "Ayala Ave, Makati, 1209 Metro Manila",
-        "lat": 14.5547,
-        "lng": 121.0244
+        "address": "Palm Ave, Makati, Metro Manila",
+        "lat": 14.5423396,
+        "lng": 121.0229465
       },
       "propertyDetails": {
         "clearHeight": "32'",
@@ -51,6 +51,17 @@
         "highCeilings": true,
         "ventilationSystems": true,
         "energyEfficientLighting": true
+      },
+      "price": {
+        "originalPrice": 4000.0,
+        "currentPrice": 3200.5,
+        "discount": "20% OFF"
+      },
+      "rating": {
+        "stars": 4.5
+      },
+      "tag": {
+        "label": ["Large Capacity", "Climate Controlled"]
       }
     },
     {
@@ -104,6 +115,17 @@
         "highCeilings": true,
         "ventilationSystems": true,
         "energyEfficientLighting": true
+      },
+      "price": {
+        "originalPrice": 5000.0,
+        "currentPrice": 4500.75,
+        "discount": "10% OFF"
+      },
+      "rating": {
+        "stars": 4.9
+      },
+      "tag": {
+        "label": ["High Tech", "Central Location"]
       }
     },
     {
@@ -157,6 +179,17 @@
         "highCeilings": true,
         "ventilationSystems": true,
         "energyEfficientLighting": true
+      },
+      "price": {
+        "originalPrice": 3500.0,
+        "currentPrice": 2800.0,
+        "discount": "20% OFF"
+      },
+      "rating": {
+        "stars": 4.2
+      },
+      "tag": {
+        "label": ["SME Friendly", "Easy Access"]
       }
     },
     {
@@ -210,6 +243,17 @@
         "highCeilings": true,
         "ventilationSystems": true,
         "energyEfficientLighting": true
+      },
+      "price": {
+        "originalPrice": 5200.0,
+        "currentPrice": 3900.25,
+        "discount": "25% OFF"
+      },
+      "rating": {
+        "stars": 4.7
+      },
+      "tag": {
+        "label": ["Central Location", "High Security"]
       }
     },
     {
@@ -217,9 +261,9 @@
       "description": "A versatile warehouse space suitable for various industries.",
       "location": {
         "city": "Manila",
-        "address": "Nicanor Reyes Sr, Street, Sampaloc, Manila, 1008 Metro Manila",
-        "lat": 14.600564,
-        "lng": 120.9782776
+        "address": "Nicanor Reyes Sr. Street, Sampaloc, Manila, 1008 Metro Manila",
+        "lat": 14.60406,
+        "lng": 120.987632
       },
       "propertyDetails": {
         "clearHeight": "25'",
@@ -263,6 +307,17 @@
         "highCeilings": false,
         "ventilationSystems": true,
         "energyEfficientLighting": true
+      },
+      "price": {
+        "originalPrice": 3125.0,
+        "currentPrice": 2500.0,
+        "discount": "20% OFF"
+      },
+      "rating": {
+        "stars": 4.0
+      },
+      "tag": {
+        "label": ["Versatile", "Affordable"]
       }
     }
   ]
