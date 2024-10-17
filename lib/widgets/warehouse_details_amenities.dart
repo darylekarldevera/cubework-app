@@ -12,10 +12,10 @@ class WarehouseDetailsAmenities extends StatefulWidget {
 
   @override
   State<WarehouseDetailsAmenities> createState() =>
-      widgetDetailsAmenitiesState();
+      WidgetDetailsAmenitiesState();
 }
 
-class widgetDetailsAmenitiesState extends State<WarehouseDetailsAmenities> {
+class WidgetDetailsAmenitiesState extends State<WarehouseDetailsAmenities> {
   bool isShowMoreAmenities = false;
 
   @override
