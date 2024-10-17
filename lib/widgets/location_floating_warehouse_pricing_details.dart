@@ -56,19 +56,32 @@ class LocationFloatingWarehousePricingDetails extends StatelessWidget {
                     color: Colors.lightGreen[100],
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text("40% OFF",
-                      style: TextStyle(color: Colors.green)),
+                  child: Text(
+                      "${tappedMarkerWarehouseDetails.price.discount}% OFF",
+                      style: const TextStyle(color: Colors.green)),
                 ),
                 Text(tappedMarkerWarehouseDetails.location.address),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue[50],
-                    borderRadius: BorderRadius.circular(20),
+                SizedBox(
+                  height: 40, // Set a fixed height for the ListView
+                  child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: tappedMarkerWarehouseDetails.tag.label.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue[50],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      tappedMarkerWarehouseDetails.tag.label[index],
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                    );
+                  },
                   ),
-                  child: const Text("Warehouse",
-                      style: TextStyle(color: Colors.blue)),
-                ),
+                )
               ],
             ),
           ),
