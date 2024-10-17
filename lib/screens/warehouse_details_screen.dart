@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/widgets/warehouse_details_property_location.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cubework_app_client/models/warehouse.dart';
@@ -78,6 +79,8 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
                 // Amenities
                 WarehouseDetailsAmenities(
                     amenities: widget.warehouse.amenities),
+                WarehouseDetailsPropertyLocation(warehouse: widget.warehouse),
+                
               ],
             )
           ],
