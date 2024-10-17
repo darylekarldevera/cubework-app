@@ -1,4 +1,3 @@
-import 'package:cubework_app_client/widgets/warehouse_details_property_location.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cubework_app_client/models/warehouse.dart';
@@ -8,6 +7,8 @@ import 'package:cubework_app_client/widgets/warehouse_details_amenities.dart';
 import 'package:cubework_app_client/widgets/warehouse_details_description.dart';
 import 'package:cubework_app_client/widgets/warehouse_details_controllers.dart';
 import 'package:cubework_app_client/widgets/warehouse_details_display_photo.dart';
+import 'package:cubework_app_client/widgets/warehouse_details_reserve_contacts.dart';
+import 'package:cubework_app_client/widgets/warehouse_details_property_location.dart';
 import 'package:cubework_app_client/widgets/warehouse_details_building_highlights.dart';
 import 'package:cubework_app_client/widgets/warehouse_details_reserve_controllers.dart';
 
@@ -80,7 +81,7 @@ class _WarehouseDetailsScreenState extends State<WarehouseDetailsScreen> {
                 WarehouseDetailsAmenities(
                     amenities: widget.warehouse.amenities),
                 WarehouseDetailsPropertyLocation(warehouse: widget.warehouse),
-                
+                const WarehouseDetailsReserveContacts(),
               ],
             )
           ],
