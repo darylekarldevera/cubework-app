@@ -1,5 +1,6 @@
-import 'package:cubework_app_client/models/location.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:cubework_app_client/models/location.dart';
 
 class WarehouseDetailsPropertyLocationControllers extends StatelessWidget {
   final Location location;
@@ -61,9 +62,14 @@ class WarehouseDetailsPropertyLocationControllers extends StatelessWidget {
             buildButton(
               title: "Copy",
               icon: Icons.copy,
-              onTap: () {
-                // Handle Copy button tap
-                print('Copy button tapped');
+              onTap: () async {
+                await Clipboard.setData(ClipboardData(text: location.address));
+                const snackBar = SnackBar(
+                  content: Text('Copied to Clipboard', textAlign: TextAlign.center),
+                    duration: Duration(seconds: 1, milliseconds: 5),
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
             ),
           ],
