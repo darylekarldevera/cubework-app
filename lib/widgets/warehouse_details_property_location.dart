@@ -22,7 +22,7 @@ class WarehouseDetailsPropertyLocation extends StatelessWidget {
           child: Column(
             children: [
               WarehouseDetailsPropertyLocationControllers(
-                  location: warehouse.location),
+                  warehouse: warehouse),
               WarehouseDetailsPropertyLocationMaps(warehouse: warehouse),
             ],
           ),
