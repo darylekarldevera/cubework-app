@@ -1,11 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cubework_app_client/models/location.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class WarehouseDetailsPropertyLocationControllers extends StatelessWidget {
-  final Location location;
+import 'package:cubework_app_client/utils/get_my_position.dart';
+import 'package:cubework_app_client/models/warehouse.dart';
+import 'package:cubework_app_client/shared/modal/notify_modal.dart';
+
+class WarehouseDetailsPropertyLocationControllers extends StatefulWidget {
+  final Warehouse warehouse;
   const WarehouseDetailsPropertyLocationControllers(
-      {super.key, required this.location});
+      {super.key, required this.warehouse});
+
+  @override
+  State<WarehouseDetailsPropertyLocationControllers> createState() =>
+      _WarehouseDetailsPropertyLocationControllersState();
+}
+
+class _WarehouseDetailsPropertyLocationControllersState
+    extends State<WarehouseDetailsPropertyLocationControllers> {
+  late bool isLoading;
+  late bool isError;
+  late String myOrigin;
+  late Position? currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    isError = false;
+    isLoading = false;
+    fetchCurrentPosition();
+  }
+
+  void Function() loading() {
+    return () {
+      setState(() {
+        isLoading = !isLoading;
+      });
+    };
+  }
+
+  void fetchCurrentPosition() async {
+    try {
+      loading();
+      currentPosition = await getMyPosition();
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentPosition!.latitude, currentPosition!.longitude);
+      myOrigin = placemarks[0].name.toString();
+      print('Current position: $placemarks');
+    } catch (e) {
+      loading();
+      setState(() { isError = !isError; });
+      print('Error fetching current position: $e');
+    }
+  }
+  
+  Future<void> navigateTo() async {
+    if (currentPosition == null) {
+      return;
+    }
+
+    final String origin =
+        '${currentPosition!.latitude},${currentPosition!.longitude}';
+    final String destination =
+        '${widget.warehouse.location.lat},${widget.warehouse.location.lng}';
+
+    final uri = Uri.parse(
+      'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=walking',
+    );
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw 'Could not launch ${uri.toString()}';
+    }
+  }
+
 
   Widget buildButton({
     required String title,
@@ -45,7 +119,7 @@ class WarehouseDetailsPropertyLocationControllers extends StatelessWidget {
           "Property Location",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        Text(location.address),
+        Text(widget.warehouse.location.address),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,21 +128,48 @@ class WarehouseDetailsPropertyLocationControllers extends StatelessWidget {
               title: "Direction",
               icon: Icons.directions,
               onTap: () {
-                // Handle Direction button tap
-                print('Direction button tapped');
+                if (isLoading) {
+                  NotifyModal.show(
+                    context,
+                    'Loading your location',
+                    'Please wait a moment',
+                    'Okay',
+                    () {
+                      Navigator.of(context).pop(); // Dismiss the dialog
+                    },
+                  );
+                  return;
+                }
+
+                if (isError) {
+                  NotifyModal.show(
+                    context,
+                    'Error fetching your location',
+                    'Please try again',
+                    'Okay',
+                    () {
+                      Navigator.of(context).pop(); // Dismiss the dialog
+                    },
+                  );
+                  return;
+                }
+                navigateTo();
               },
+
             ),
             const SizedBox(width: 20),
             buildButton(
               title: "Copy",
               icon: Icons.copy,
               onTap: () async {
-                await Clipboard.setData(ClipboardData(text: location.address));
+                await Clipboard.setData(
+                    ClipboardData(text: widget.warehouse.location.address));
                 const snackBar = SnackBar(
-                  content: Text('Copied to Clipboard', textAlign: TextAlign.center),
-                    duration: Duration(seconds: 1, milliseconds: 5),
+                  content:
+                      Text('Copied to Clipboard', textAlign: TextAlign.center),
+                  duration: Duration(seconds: 1, milliseconds: 5),
                 );
-
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
             ),
