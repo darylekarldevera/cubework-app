@@ -1,8 +1,9 @@
+import 'package:cubework_app_client/constants/time_slots.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:cubework_app_client/utils/format_date.dart';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 
 class DatePickerWidget extends StatefulWidget {
   final void Function(DateTime, String, String) datePickerHandler;
@@ -12,15 +13,16 @@ class DatePickerWidget extends StatefulWidget {
   State<DatePickerWidget> createState() => _DatePickerWidgetState();
 
   // Static method to show the modal
-  static void show(
-      BuildContext context, void Function(DateTime, String, String) datePickerHandler) {
+  static void show(BuildContext context,
+      void Function(DateTime, String, String) datePickerHandler) {
+    // Show the stateful widget here
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
         return DatePickerWidget(
           datePickerHandler: datePickerHandler,
-        ); // Show the stateful widget here
+        );
       },
     );
   }
@@ -40,9 +42,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
-    generateAvailableTimes(selectedDate);
 
     selectedMeridiemIndicator = DateFormat('a').format(selectedDate);
+    availableTimes = generateAvailableTimes(selectedDate);
+    selectedTime = availableTimes.isNotEmpty ? availableTimes.first : "";
 
     dropDownFocus.addListener(() {
       setState(() {
@@ -53,54 +56,102 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     });
   }
 
-  void generateAvailableTimes(DateTime newDate) async {
-    try {
-      DateTime currentTime;
-      final endOfDay =
-          DateTime(newDate.year, newDate.month, newDate.day, 23, 59);
+  List<String> generateAvailableTimes(DateTime newDate) {
+    List<String> times = [];
+    DateTime currentTime = DateTime.now();
 
-      // If the time is before 30 minutes in the hour, round to the next half hour
-      // If the time is after 30 minutes, round up to 1:30 of the next hour
-      if (newDate.minute < 30) {
-        currentTime = DateTime(
-            newDate.year, newDate.month, newDate.day, newDate.hour, 30);
+    // If the date is in the future, return all slots
+    if (currentTime.day.compareTo(newDate.day) == -1) {
+      if (selectedMeridiemIndicator == "PM" && todayMeridiemIndicator == "AM") {
+        return pmTimeSlots;
       } else {
-        // Move to the next hour and start at 30 minutes past that hour
-        currentTime = DateTime(
-            newDate.year, newDate.month, newDate.day, newDate.hour + 1, 30);
+        return amTimeSlots;
       }
-
-      List<String> times = [];
-
-      // Generate time slots with 30-minute gaps until end of the day
-      while (currentTime.isBefore(endOfDay)) {
-        times.add(DateFormat.Hm()
-            .format(currentTime)); // Convert time to 12-hour format
-        currentTime = currentTime
-            .add(const Duration(minutes: 30)); // Increment by 30 minutes
-      }
-
-      setState(() {
-        availableTimes = times;
-        selectedTime = availableTimes.isNotEmpty
-            ? availableTimes.first
-            : '';
-      });
-    } catch (e) {
-      print(e);
     }
+
+    // Handle AM time slots
+    if (selectedMeridiemIndicator == "AM" && todayMeridiemIndicator == "AM") {
+      for (String time in amTimeSlots) {
+        final timeParts = time.split(":");
+        final timeHour = int.parse(timeParts[0]);
+        final timeMinute = int.parse(timeParts[1]);
+
+        // Compare hours and minutes for AM times
+        if (timeHour > currentTime.hour) {
+          times.add(time);
+        } else if (timeHour == currentTime.hour &&
+            timeMinute > currentTime.minute) {
+          times.add(time);
+        }
+      }
+
+      return times;
+    }
+
+    // Handle PM time slots
+    if (selectedMeridiemIndicator == "PM" && todayMeridiemIndicator == "PM") {
+      for (String time in pmTimeSlots) {
+        final timeParts = time.split(":");
+        int timeHour = int.parse(timeParts[0]);
+
+        // Convert PM time to 24-hour format
+        timeHour += 12; // 1 PM becomes 13, 2 PM becomes 14, etc.
+        if (timeHour == 24) timeHour = 12; // Special case for 12:00 PM
+
+        final timeMinute = int.parse(timeParts[1]);
+
+        // Compare hours and minutes for PM times
+        if (timeHour > currentTime.hour) {
+          times.add(time);
+        } else if (timeHour == currentTime.hour &&
+            timeMinute > currentTime.minute) {
+          times.add(time);
+        }
+      }
+
+      return times;
+    }
+
+    // Return all PM slots if switching from AM to PM
+    if (selectedMeridiemIndicator == "PM" && todayMeridiemIndicator == "AM") {
+      return pmTimeSlots;
+    }
+
+    return times;
   }
+
 
   void onDateChangedHandler(DateTime date) {
     final formattedDate = formatDate(date);
     final formattedTodaysDate = formatDate(DateTime.now());
     final isTodaySelectedDate = formattedDate == formattedTodaysDate;
     final newDate = isTodaySelectedDate ? DateTime.now() : date;
+
     setState(() {
-      selectedDate = newDate;
-      generateAvailableTimes(newDate);
       todayMeridiemIndicator =
           isTodaySelectedDate ? DateFormat('a').format(DateTime.now()) : "AM";
+
+      selectedMeridiemIndicator = "AM";
+    
+      selectedDate = newDate;
+      availableTimes = generateAvailableTimes(newDate);
+      selectedTime = availableTimes.isNotEmpty ? availableTimes.first : "";
+    });
+  }
+
+  void meridiemIndicatorHandler(String indicator) {
+    DateTime currentTime = DateTime.now();
+
+    if (currentTime.day.compareTo(selectedDate.day) == 0 &&
+        indicator == "AM" &&
+        todayMeridiemIndicator == "PM") {
+      return;
+    }
+
+    setState(() {
+      selectedMeridiemIndicator = indicator;
+      availableTimes = generateAvailableTimes(selectedDate);
+      selectedTime = availableTimes.isNotEmpty ? availableTimes.first : "";
     });
   }
 
@@ -108,11 +159,12 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     if (todayMeridiemIndicator == "PM") {
       return Colors.grey;
     }
+    
     return Colors.black;
   }
 
   bool isSelectButtonEnabled() {
-    if (availableTimes.isEmpty || availableTimes.first == selectedTime) {
+    if (availableTimes.isEmpty) {
       return false;
     }
     return true;
@@ -135,6 +187,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       );
     }).toList();
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -282,10 +335,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    if (todayMeridiemIndicator == "PM") return;
-                                    selectedMeridiemIndicator = "AM";
-                                  });
+                                  meridiemIndicatorHandler("AM");
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -301,9 +351,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    selectedMeridiemIndicator = "PM";
-                                  });
+                                  meridiemIndicatorHandler("PM");
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
