@@ -3,6 +3,11 @@
     {
       "name": "Colegio San Agustin Makati",
       "description": "A spacious warehouse located in the heart of Makati, ideal for large-scale storage needs.",
+      "images": [
+        
+        "https://via.placeholder.com/600x400/90EE90/ffffff",
+        "https://via.placeholder.com/600x400/ADD8E6/ffffff"
+      ],
       "location": {
         "city": "Makati",
         "address": "Palm Ave, Makati, Metro Manila",
@@ -67,6 +72,10 @@
     {
       "name": "Tower 6789 - CubeWork PH",
       "description": "A modern warehouse facility equipped with state-of-the-art technology.",
+      "images": [
+        "https://via.placeholder.com/600x400/FFA07A/ffffff",
+        "https://via.placeholder.com/600x400/ADD8E6/ffffff"
+      ],
       "location": {
         "city": "Makati",
         "address": "6789 Ayala Ave, Makati, 1206 Metro Manila",
@@ -131,6 +140,10 @@
     {
       "name": "Greenbelt",
       "description": "An accessible warehouse suitable for small to medium enterprises.",
+      "images": [
+        "https://via.placeholder.com/600x400/ADD8E6/ffffff",
+        "https://via.placeholder.com/600x400/90EE90/ffffff"
+      ],
       "location": {
         "city": "Makati",
         "address": "Legazpi Street, Legazpi Village, Makati, Kalakhang Maynila",
@@ -195,6 +208,10 @@
     {
       "name": "San Beda University",
       "description": "A centrally located warehouse with excellent transport links.",
+      "images": [
+        "https://via.placeholder.com/600x400/EE82EE/ffffff",
+        "https://via.placeholder.com/600x400/FFA07A/ffffff"
+      ],
       "location": {
         "city": "Manila",
         "address": "638 Mendiola St, San Miguel, Manila, 1005 Metro Manila",
@@ -259,6 +276,10 @@
     {
       "name": "Far Eastern University",
       "description": "A versatile warehouse space suitable for various industries.",
+      "images": [
+        "https://via.placeholder.com/600x400/8A2BE2/ffffff",
+        "https://via.placeholder.com/600x400/ADD8E6/ffffff"
+      ],
       "location": {
         "city": "Manila",
         "address": "Nicanor Reyes Sr. Street, Sampaloc, Manila, 1008 Metro Manila",
