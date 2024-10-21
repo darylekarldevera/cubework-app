@@ -38,7 +38,7 @@ class WarehouseDetailsPricing extends StatelessWidget {
                 color: Colors.lightGreen[100],
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text("${warehouse.price.discount}% OFF",
+              child: Text("${warehouse.price.discount.round()}% OFF",
                   style: const TextStyle(color: Colors.green)),
             ),
           ],

@@ -37,7 +37,7 @@ class WarehouseDetailsControllers extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(20)),
                 padding: const EdgeInsets.all(8),
                 child: const Icon(Icons.favorite_outline),
               ),
