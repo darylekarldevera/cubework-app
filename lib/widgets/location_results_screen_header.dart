@@ -7,6 +7,7 @@ import 'package:cubework_app_client/shared/modal/explore_search_widget.dart';
 
 class LocationResultsScreenHeader extends StatelessWidget {
   final ReservedWarehouse reservedWarehouse;
+  
   const LocationResultsScreenHeader(
       {super.key, required this.reservedWarehouse});
 
@@ -50,7 +51,7 @@ class LocationResultsScreenHeader extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 15.0),
               constraints: const BoxConstraints(maxHeight: double.infinity),
               child: Container(
                 decoration: const BoxDecoration(
@@ -60,12 +61,47 @@ class LocationResultsScreenHeader extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey[200], elevation: 0),
-                        onPressed: () {
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        leading: const Icon(Icons.search),
+                        title: Text(
+                          reservedWarehouse.warehouse.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          searchButtonTitleHandler(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                        trailing: GestureDetector(
+                          onTap: () => {
+                            print("Filter button pressed"),
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Icon(
+                              Icons.tune,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) =>
@@ -76,20 +112,6 @@ class LocationResultsScreenHeader extends StatelessWidget {
                             ),
                           );
                         },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ListTile(
-                              leading: const Icon(Icons.search),
-                              title: Text(reservedWarehouse.warehouse.name),
-                              subtitle: Text(
-                                searchButtonTitleHandler(),
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 12),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                     Container(height: 15),
