@@ -12,6 +12,7 @@ part 'warehouse.g.dart';
 class Warehouse {
   final String name;
   final String description;
+  final List<String> images;
   final Location location;
   final PropertyDetails propertyDetails;
   final Amenities amenities;
@@ -22,6 +23,7 @@ class Warehouse {
   Warehouse({
     this.name = '',
     this.description = '',
+    this.images = const [],
     Location? location,
     PropertyDetails? propertyDetails,
     Amenities? amenities,

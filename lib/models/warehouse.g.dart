@@ -9,6 +9,10 @@ part of 'warehouse.dart';
 Warehouse _$WarehouseFromJson(Map<String, dynamic> json) => Warehouse(
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       location: json['location'] == null
           ? null
           : Location.fromJson(json['location'] as Map<String, dynamic>),
@@ -33,6 +37,7 @@ Warehouse _$WarehouseFromJson(Map<String, dynamic> json) => Warehouse(
 Map<String, dynamic> _$WarehouseToJson(Warehouse instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
+      'images': instance.images,
       'location': instance.location,
       'propertyDetails': instance.propertyDetails,
       'amenities': instance.amenities,
