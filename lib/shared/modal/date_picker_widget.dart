@@ -44,6 +44,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     selectedDate = DateTime.now();
 
     selectedMeridiemIndicator = DateFormat('a').format(selectedDate);
+
     availableTimes = generateAvailableTimes(selectedDate);
     selectedTime = availableTimes.isNotEmpty ? availableTimes.first : "";
 
@@ -84,7 +85,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           times.add(time);
         }
       }
-
+  
       return times;
     }
 
@@ -128,11 +129,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     final newDate = isTodaySelectedDate ? DateTime.now() : date;
 
     setState(() {
-      todayMeridiemIndicator =
-          isTodaySelectedDate ? DateFormat('a').format(DateTime.now()) : "AM";
+      todayMeridiemIndicator = DateFormat('a').format(DateTime.now());
+      selectedMeridiemIndicator = DateFormat('a').format(newDate);
 
-      selectedMeridiemIndicator = "AM";
-    
       selectedDate = newDate;
       availableTimes = generateAvailableTimes(newDate);
       selectedTime = availableTimes.isNotEmpty ? availableTimes.first : "";
