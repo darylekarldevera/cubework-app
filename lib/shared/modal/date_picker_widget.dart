@@ -158,6 +158,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     if (todayMeridiemIndicator == "PM") {
       return Colors.grey;
     }
+
+    if (selectedMeridiemIndicator == "AM") {
+      return Colors.white;
+    }
     
     return Colors.black;
   }
@@ -326,47 +330,43 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                             ),
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade200),
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  meridiemIndicatorHandler("AM");
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 4),
-                                  color: selectedMeridiemIndicator != "AM"
-                                      ? null
-                                      : Colors.grey.shade100,
-                                  child: Text("AM",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold, color: isMeridiemIndicatorAvailable())),
-                                ),
+                        Row(
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                meridiemIndicatorHandler("AM");
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 4),
+                                color: selectedMeridiemIndicator != "AM"
+                                    ? null
+                                    : Colors.green,
+                                child: Text("AM",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: isMeridiemIndicatorAvailable())),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  meridiemIndicatorHandler("PM");
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 4),
-                                  color: selectedMeridiemIndicator != "PM"
-                                      ? null
-                                      : Colors.grey.shade100,
-                                  child: const Text("PM",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                meridiemIndicatorHandler("PM");
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 4),
+                                color: selectedMeridiemIndicator != "PM"
+                                    ? null
+                                    : Colors.green,
+                                child: Text("PM",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold, color: selectedMeridiemIndicator == "PM" ? Colors.white : Colors.black)),
                               ),
-                            ],
-                          ),
-                        )
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
