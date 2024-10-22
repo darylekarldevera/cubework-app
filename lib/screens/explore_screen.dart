@@ -1,3 +1,4 @@
+import 'package:cubework_app_client/shared/modal/explore_screen_filter_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -50,9 +51,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 );
               },
-              child: const ListTile(
-                leading: Icon(Icons.search),
-                title: Text("Search"),
+              child: ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text("Search"),
+                trailing: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      ExploreScreenFilter.show(context);
+                    },
+                    child: const Icon(Icons.tune),
+                  )
+                ),
               ),
             ),
           ),
