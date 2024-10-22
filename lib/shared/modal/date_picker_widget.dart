@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:cubework_app_client/utils/format_date.dart';
 
-
 class DatePickerWidget extends StatefulWidget {
   final void Function(DateTime, String, String) datePickerHandler;
   const DatePickerWidget({super.key, required this.datePickerHandler});
@@ -72,45 +71,30 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
     // Handle AM time slots
     if (selectedMeridiemIndicator == "AM" && todayMeridiemIndicator == "AM") {
-      for (String time in amTimeSlots) {
-        final timeParts = time.split(":");
-        final timeHour = int.parse(timeParts[0]);
+      return amTimeSlots.asMap().entries.map((entry) {
+        final timeParts = entry.value.split(":");
         final timeMinute = int.parse(timeParts[1]);
+        int timeHour = int.parse(timeParts[0]);
 
-        // Compare hours and minutes for AM times
-        if (timeHour > currentTime.hour) {
-          times.add(time);
-        } else if (timeHour == currentTime.hour &&
-            timeMinute > currentTime.minute) {
-          times.add(time);
-        }
-      }
-  
-      return times;
+        return timeSlot(entry, currentTime, timeHour, timeMinute);
+      }).toList();
     }
 
     // Handle PM time slots
     if (selectedMeridiemIndicator == "PM" && todayMeridiemIndicator == "PM") {
-      for (String time in pmTimeSlots) {
-        final timeParts = time.split(":");
+      return pmTimeSlots.asMap().entries.map((entry) {
+        final timeParts = entry.value.split(":");
+        final timeMinute = int.parse(timeParts[1]);
         int timeHour = int.parse(timeParts[0]);
 
-        // Convert PM time to 24-hour format
-        timeHour += 12; // 1 PM becomes 13, 2 PM becomes 14, etc.
-        if (timeHour == 24) timeHour = 12; // Special case for 12:00 PM
+        timeHour += 12;
 
-        final timeMinute = int.parse(timeParts[1]);
-
-        // Compare hours and minutes for PM times
-        if (timeHour > currentTime.hour) {
-          times.add(time);
-        } else if (timeHour == currentTime.hour &&
-            timeMinute > currentTime.minute) {
-          times.add(time);
+        if (timeHour == 24) {
+          timeHour = 12;
         }
-      }
 
-      return times;
+        return timeSlot(entry, currentTime, timeHour, timeMinute);
+      }).toList();
     }
 
     // Return all PM slots if switching from AM to PM
@@ -121,6 +105,17 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     return times;
   }
 
+  String timeSlot(MapEntry<int, String> entry, DateTime currentTime,
+      int timeHour, int timeMinute) {
+    if (timeHour > currentTime.hour) {
+      return entry.value;
+    } else if (timeHour == currentTime.hour &&
+        timeMinute > currentTime.minute) {
+      return entry.value;
+    }
+
+    return entry.value;
+  }
 
   void onDateChangedHandler(DateTime date) {
     final formattedDate = formatDate(date);
@@ -162,7 +157,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     if (selectedMeridiemIndicator == "AM") {
       return Colors.white;
     }
-    
+
     return Colors.black;
   }
 
@@ -254,7 +249,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                     initialDate: selectedDate,
                     firstDate: DateTime.now(),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
-                    onDateChanged: (DateTime date) => onDateChangedHandler(date),
+                    onDateChanged: (DateTime date) =>
+                        onDateChangedHandler(date),
                   ),
                 ),
               ),
@@ -324,8 +320,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                                                 }
                                               });
                                             },
-                                            items: getDropDownMenu()
-                                          )),
+                                            items: getDropDownMenu())),
                               ],
                             ),
                           ),
@@ -362,7 +357,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                                 child: Text("PM",
                                     style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold, color: selectedMeridiemIndicator == "PM" ? Colors.white : Colors.black)),
+                                        fontWeight: FontWeight.bold,
+                                        color: selectedMeridiemIndicator == "PM"
+                                            ? Colors.white
+                                            : Colors.black)),
                               ),
                             ),
                           ],
@@ -377,7 +375,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                   margin: const EdgeInsets.only(left: 15, right: 15),
                   child: ElevatedButton(
                       onPressed: () => {
-                            widget.datePickerHandler(selectedDate, selectedTime, selectedMeridiemIndicator),
+                            widget.datePickerHandler(selectedDate, selectedTime,
+                                selectedMeridiemIndicator),
                             Navigator.of(context).pop()
                           },
                       style: ButtonStyle(
