@@ -251,6 +251,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                     lastDate: DateTime.now().add(const Duration(days: 365)),
                     onDateChanged: (DateTime date) =>
                         onDateChangedHandler(date),
+                    selectableDayPredicate: (DateTime val) {
+                      // Disable weekends (Sat-Sun)
+                      return val.weekday != 6 && val.weekday != 7;
+                    },
                   ),
                 ),
               ),
